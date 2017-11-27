@@ -13,11 +13,11 @@
     <name>Sample Code of Dependency Injection</name>
     <description>Sample Implementation</description>
 
-    <url>https://github.com/meru26/dependency-injection</url>
+    <url>https://github.com/ssobue/dependency-injection</url>
 
     <issueManagement>
         <system>Github</system>
-        <url>https://github.com/meru26/dependency-injection/issues</url>
+        <url>https://github.com/ssobue/dependency-injection/issues</url>
     </issueManagement>
 
     <ciManagement>
