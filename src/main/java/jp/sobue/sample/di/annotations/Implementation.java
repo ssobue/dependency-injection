@@ -7,13 +7,13 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Autowired Annotation: for dependency injection field annotation
+ * Implementation Annotation: regist dependency injection container automatically, when scanned
+ * annotated classes
  *
  * @author Sho Sobue
  * @see java.lang.annotation.Annotation
  */
 @Retention(RUNTIME)
-@Target({ElementType.FIELD})
-public @interface Autowired {
-
+@Target({ElementType.TYPE})
+public @interface Implementation {
 }

@@ -11,7 +11,6 @@ public interface SampleController {
    * get data
    *
    * @param input input value
-   *
    * @return get result
    */
   String get(String input);

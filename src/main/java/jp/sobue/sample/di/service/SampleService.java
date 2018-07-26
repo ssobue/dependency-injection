@@ -11,7 +11,6 @@ public interface SampleService {
    * get data
    *
    * @param input input value
-   *
    * @return get result
    */
   String get(String input);

@@ -1,7 +1,7 @@
 package jp.sobue.sample.di.controller;
 
-import jp.sobue.sample.di.annotations.Autowired;
-import jp.sobue.sample.di.annotations.Component;
+import jp.sobue.sample.di.annotations.Implementation;
+import jp.sobue.sample.di.annotations.InjectObject;
 import jp.sobue.sample.di.service.SampleService;
 
 /**
@@ -9,13 +9,13 @@ import jp.sobue.sample.di.service.SampleService;
  *
  * @author Sho Sobue
  */
-@Component
+@Implementation
 public class SampleControllerImpl implements SampleController {
 
   /**
    * Sample Service
    */
-  @Autowired
+  @InjectObject
   private SampleService sampleService;
 
   /**

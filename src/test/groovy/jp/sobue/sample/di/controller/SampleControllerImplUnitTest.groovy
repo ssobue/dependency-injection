@@ -4,7 +4,7 @@ import jp.sobue.sample.di.service.SampleService
 import spock.lang.Specification
 import spock.lang.Unroll
 
-class SampleControllerImplSTest extends Specification {
+class SampleControllerImplUnitTest extends Specification {
 
   private SampleController controller
 
@@ -18,7 +18,7 @@ class SampleControllerImplSTest extends Specification {
     when:
       def result = controller.get(input)
     then:
-      1 * controller.sampleService.get(input) >> { return input }
+      1 * (controller as SampleControllerImpl).sampleService.get(input) >> { return input }
 
       assert result == input
 

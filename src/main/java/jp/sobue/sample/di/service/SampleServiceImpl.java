@@ -1,7 +1,7 @@
 package jp.sobue.sample.di.service;
 
-import jp.sobue.sample.di.annotations.Autowired;
-import jp.sobue.sample.di.annotations.Component;
+import jp.sobue.sample.di.annotations.InjectObject;
+import jp.sobue.sample.di.annotations.Implementation;
 import jp.sobue.sample.di.repository.SampleRepository;
 
 /**
@@ -9,20 +9,16 @@ import jp.sobue.sample.di.repository.SampleRepository;
  *
  * @author Sho Sobue
  */
-@Component
+@Implementation
 public class SampleServiceImpl implements SampleService {
 
-  /**
-   * Sample Repository
-   */
-  @Autowired
-  private SampleRepository repository;
+  /** Sample Repository */
+  @InjectObject private SampleRepository repository;
 
   /**
    * get data
    *
    * @param input input value
-   *
    * @return get result
    */
   @Override

@@ -1,5 +1,11 @@
 package jp.sobue.sample.di.container;
 
+import jp.sobue.sample.di.annotations.InjectObject;
+import jp.sobue.sample.di.annotations.Implementation;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -10,11 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.stream.Collectors;
-import jp.sobue.sample.di.annotations.Autowired;
-import jp.sobue.sample.di.annotations.Component;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Dependency Injection Container Implementation
@@ -23,14 +26,10 @@ import org.slf4j.LoggerFactory;
  */
 public class DependencyInjectionContainer {
 
-  /**
-   * Logger
-   */
+  /** Logger */
   private static final Logger logger = LoggerFactory.getLogger(DependencyInjectionContainer.class);
 
-  /**
-   * Container
-   */
+  /** Container */
   private static final Map<String, Object> container = new HashMap<>();
 
   // for trace log
@@ -41,7 +40,7 @@ public class DependencyInjectionContainer {
   /**
    * regist container by id
    *
-   * @param id     name
+   * @param id name
    * @param object instance object
    */
   public static void registObject(String id, Object object) {
@@ -53,12 +52,12 @@ public class DependencyInjectionContainer {
    * initialize container: scan component annotation, inject values
    *
    * @param basePackages scan packages
-   *
    * @throws ClassNotFoundException unknown class specified
    * @throws InstantiationException no default constructor
    * @throws IllegalAccessException not accessible class
    */
-  public static void init(String... basePackages) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+  public static void init(String... basePackages)
+      throws ClassNotFoundException, InstantiationException, IllegalAccessException {
     logger.info("start scan component objects of base packages");
     load(basePackages);
     logger.info("start injection object parameters");
@@ -70,13 +69,13 @@ public class DependencyInjectionContainer {
    * load classes and create instance that presented component annotation
    *
    * @param basePackages scan packages
-   *
    * @throws ClassNotFoundException unknown class specified
    * @throws InstantiationException no default constructor
    * @throws IllegalAccessException not accessible class
    */
-  private static void load(String... basePackages) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-    // Scan Component Classes
+  private static void load(String... basePackages)
+      throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    // Scan Implementation Classes
     logger.debug("scan => basePackages:{}", Arrays.asList(basePackages));
     for (String packageName : basePackages) {
       logger.debug("scan => basePackage:{}", packageName);
@@ -85,12 +84,13 @@ public class DependencyInjectionContainer {
       List<String> classes = getCassNameList(packageName);
       logger.debug("class list => basePackage:{} classes:{}", packageName, classes);
 
-      // Load Component Annotated Classes
+      // Load Implementation Annotated Classes
       for (String className : classes) {
         Class<?> clazz = Class.forName(className);
-        Annotation annotation = clazz.getAnnotation(Component.class);
+        Annotation annotation = clazz.getAnnotation(Implementation.class);
         if (annotation != null) {
-          logger.debug("class:{} is Component annotation presented, regist to container", className);
+          logger.debug(
+              "class:{} is Implementation annotation presented, regist to container", className);
           container.put(clazz.getSimpleName(), clazz.newInstance());
         }
       }
@@ -101,7 +101,6 @@ public class DependencyInjectionContainer {
    * get class name list by package name
    *
    * @param packageName package name
-   *
    * @return list of class name
    */
   private static List<String> getCassNameList(String packageName) {
@@ -109,9 +108,11 @@ public class DependencyInjectionContainer {
     ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
     URL root = classLoader.getResource(resourceName);
 
-    File[] files = new File(root.getFile()).listFiles((dir, name) -> name.endsWith(".class"));
-    return Arrays.asList(files).stream()
-        .map(file -> file.getName())
+    File[] files =
+        new File(Objects.requireNonNull(root).getFile())
+            .listFiles((dir, name) -> name.endsWith(".class"));
+    return Arrays.stream(Objects.requireNonNull(files))
+        .map(File::getName)
         .map(name -> name.replaceAll(".class$", ""))
         .map(name -> packageName + "." + name)
         .collect(Collectors.toList());
@@ -127,8 +128,9 @@ public class DependencyInjectionContainer {
       Class<?> clazz = object.getValue().getClass();
       logger.debug("start injection => class:{}", clazz.getName());
       for (Field field : clazz.getDeclaredFields()) {
-        if (!field.isAnnotationPresent(Autowired.class)) {
-          logger.debug("Autowired is not presented. class:{} field:{}", clazz.getName(), field.getName());
+        if (!field.isAnnotationPresent(InjectObject.class)) {
+          logger.debug(
+              "InjectObject is not presented. class:{} field:{}", clazz.getName(), field.getName());
           continue;
         }
 
@@ -138,9 +140,10 @@ public class DependencyInjectionContainer {
           field.setAccessible(true);
         }
 
-        logger.debug("Autowired is presented. class:{} field:{}", clazz.getName(), field.getName());
+        logger.debug(
+            "InjectObject is presented. class:{} field:{}", clazz.getName(), field.getName());
         logger.debug("start search object from container by class type");
-        field.set(object.getValue(), getObject(field.getType()));
+        field.set(object.getValue(), getImplementation(field.getType()));
 
         if (modifyAccessible) {
           field.setAccessible(false);
@@ -153,11 +156,10 @@ public class DependencyInjectionContainer {
    * get instance from container
    *
    * @param tClass class type
-   * @param <T>    interface class
-   *
+   * @param <T> interface class
    * @return instance
    */
-  public static <T> T getObject(Class<T> tClass) {
+  public static <T> T getImplementation(Class<T> tClass) {
     logger.debug("search for object for class:{}", tClass.getName());
 
     List<Object> result = new ArrayList<>();
@@ -195,8 +197,7 @@ public class DependencyInjectionContainer {
    * get list of super class
    *
    * @param superClasses list of super class
-   * @param clazz        target class
-   *
+   * @param clazz target class
    * @return list of super class
    */
   private static List<Class<?>> getSuperClasses(List<Class<?>> superClasses, Class<?> clazz) {

@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>jp.sobue.sample.di</groupId>
+    <groupId>jp.sobue.sample</groupId>
     <artifactId>dependency-injection</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -33,24 +33,22 @@
         <commons.codec.version>1.11</commons.codec.version>
         <logback.version>1.2.3</logback.version>
         <slf4j.version>1.7.25</slf4j.version>
-        <annotations.version>15.0</annotations.version>
         <!-- Test Dependency Version -->
-        <groovy.version>2.4.12</groovy.version>
+        <groovy.version>2.4.15</groovy.version>
         <spock.version>1.1-groovy-2.4</spock.version>
         <!-- Plugin Version -->
         <maven.clean.plugin.version>3.0.0</maven.clean.plugin.version>
-        <maven.enforcer.plugin.version>3.0.0-M1</maven.enforcer.plugin.version>
+        <maven.enforcer.plugin.version>3.0.0-M2</maven.enforcer.plugin.version>
         <maven.resources.plugin.version>3.0.2</maven.resources.plugin.version>
         <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
         <gmaven.version>1.5</gmaven.version>
-        <maven.surefire.plugin.version>2.20.1</maven.surefire.plugin.version>
+        <maven.surefire.plugin.version>2.22.0</maven.surefire.plugin.version>
         <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
-        <maven.site.plugin.version>3.6</maven.site.plugin.version>
+        <maven.site.plugin.version>3.7</maven.site.plugin.version>
         <maven.jxr.plugin.version>2.5</maven.jxr.plugin.version>
-        <maven.project.info.reports.plugin.version>2.9</maven.project.info.reports.plugin.version>
+        <maven.project.info.reports.plugin.version>3.0.0</maven.project.info.reports.plugin.version>
         <maven.pmd.plugin.version>3.8</maven.pmd.plugin.version>
-        <maven.javadoc.plugin.version>3.0.0-M1</maven.javadoc.plugin.version>
-        <taglist.maven.plugin.version>2.4</taglist.maven.plugin.version>
+        <maven.javadoc.plugin.version>3.0.0</maven.javadoc.plugin.version>
         <jacoco.maven.plugin.version>0.7.9</jacoco.maven.plugin.version>
     </properties>
 
@@ -71,11 +69,6 @@
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>${annotations.version}</version>
-        </dependency>
 
         <!-- Test Dependencies -->
         <dependency>
@@ -89,6 +82,12 @@
             <artifactId>spock-core</artifactId>
             <version>${spock.version}</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-all</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
@@ -111,11 +110,10 @@
                         </goals>
                         <configuration>
                             <rules>
-                                <requireMavenVersion>
-                                    <version>3.5.0</version>
-                                </requireMavenVersion>
+                                <dependencyConvergence/>
+                                <banDuplicatePomDependencyVersions/>
                                 <requireJavaVersion>
-                                    <version>1.8</version>
+                                    <version>${java.version}</version>
                                 </requireJavaVersion>
                             </rules>
                         </configuration>
@@ -162,7 +160,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.plugin.version}</version>
                 <configuration>
-                    <threadCount>8</threadCount>
+                    <forkCount>1.0C</forkCount>
                     <redirectTestOutputToFile>true</redirectTestOutputToFile>
                     <trimStackTrace>true</trimStackTrace>
                 </configuration>
@@ -189,16 +187,12 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <version>${maven.project.info.reports.plugin.version}</version>
-                <configuration>
-                    <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
                 <version>${maven.surefire.plugin.version}</version>
                 <configuration>
-                    <aggregate>true</aggregate>
                     <linkXRef>true</linkXRef>
                     <showSuccess>true</showSuccess>
                 </configuration>
@@ -212,14 +206,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${maven.javadoc.plugin.version}</version>
-                <configuration>
-                    <source>${java.version}</source>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>taglist-maven-plugin</artifactId>
-                <version>${taglist.maven.plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -259,10 +245,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>taglist-maven-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>

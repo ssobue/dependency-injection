@@ -7,13 +7,12 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Component Annotation: regist dependency injection container automatically, when scanned annotated classes
+ * InjectObject Annotation: for dependency injection field annotation
  *
  * @author Sho Sobue
  * @see java.lang.annotation.Annotation
  */
 @Retention(RUNTIME)
-@Target({ElementType.TYPE})
-public @interface Component {
-
+@Target({ElementType.FIELD})
+public @interface InjectObject {
 }
