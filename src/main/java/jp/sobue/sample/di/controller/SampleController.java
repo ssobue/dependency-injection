@@ -1,17 +1,17 @@
 package jp.sobue.sample.di.controller;
 
 /**
- * Sample Controller Interface
+ * Sample Controller Interface.
  *
  * @author Sho Sobue
  */
 public interface SampleController {
 
   /**
-   * get data
+   * get data.
    *
    * @param input input value
    * @return get result
    */
-  String get(String input);
+  String get(final String input);
 }

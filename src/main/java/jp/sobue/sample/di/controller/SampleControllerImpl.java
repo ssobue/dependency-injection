@@ -5,28 +5,19 @@ import jp.sobue.sample.di.annotations.InjectObject;
 import jp.sobue.sample.di.service.SampleService;
 
 /**
- * Sample Controller Implementation
+ * Sample Controller Implementation.
  *
  * @author Sho Sobue
  */
 @Implementation
 public class SampleControllerImpl implements SampleController {
 
-  /**
-   * Sample Service
-   */
-  @InjectObject
-  private SampleService sampleService;
+  /** Sample Service. */
+  @InjectObject private SampleService sampleService;
 
-  /**
-   * get data
-   *
-   * @param input input value
-   *
-   * @return get result
-   */
+  /** {@inheritDoc} */
   @Override
-  public String get(String input) {
+  public String get(final String input) {
     return sampleService.get(input);
   }
 }

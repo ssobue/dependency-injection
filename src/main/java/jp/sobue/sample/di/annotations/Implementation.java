@@ -2,18 +2,16 @@ package jp.sobue.sample.di.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Implementation Annotation: regist dependency injection container automatically, when scanned
- * annotated classes
+ * annotated classes.
  *
  * @author Sho Sobue
  * @see java.lang.annotation.Annotation
  */
-@Retention(RUNTIME)
+@Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface Implementation {
-}
+public @interface Implementation {}

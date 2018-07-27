@@ -14,6 +14,7 @@ class SampleRepositoryImplUnitTest extends Specification {
   def "get nullの場合 input:null"() {
     when:
       repository.get(null)
+
     then:
       thrown(Exception)
   }
@@ -22,6 +23,7 @@ class SampleRepositoryImplUnitTest extends Specification {
   def "get #testCase input:#input answer:#answer"() {
     when:
       def result = repository.get(input)
+
     then:
       assert result == answer
 

@@ -17,6 +17,7 @@ class SampleControllerImplUnitTest extends Specification {
   def "get #testCase input:#input"() {
     when:
       def result = controller.get(input)
+
     then:
       1 * (controller as SampleControllerImpl).sampleService.get(input) >> { return input }
 

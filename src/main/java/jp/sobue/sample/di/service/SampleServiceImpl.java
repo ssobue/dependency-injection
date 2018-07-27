@@ -1,28 +1,23 @@
 package jp.sobue.sample.di.service;
 
-import jp.sobue.sample.di.annotations.InjectObject;
 import jp.sobue.sample.di.annotations.Implementation;
+import jp.sobue.sample.di.annotations.InjectObject;
 import jp.sobue.sample.di.repository.SampleRepository;
 
 /**
- * Sample Controller Interface
+ * Sample Controller Implementation.
  *
  * @author Sho Sobue
  */
 @Implementation
 public class SampleServiceImpl implements SampleService {
 
-  /** Sample Repository */
+  /** Sample Repository. */
   @InjectObject private SampleRepository repository;
 
-  /**
-   * get data
-   *
-   * @param input input value
-   * @return get result
-   */
+  /** {@inheritDoc} */
   @Override
-  public String get(String input) {
+  public String get(final String input) {
     return repository.get(input);
   }
 }

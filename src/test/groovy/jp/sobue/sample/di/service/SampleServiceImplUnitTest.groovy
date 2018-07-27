@@ -17,6 +17,7 @@ class SampleServiceImplUnitTest extends Specification {
   def "get #testCase input:#input"() {
     when:
       def result = service.get(input)
+
     then:
       1 * (service as SampleServiceImpl).repository.get(input) >> { return input }
 

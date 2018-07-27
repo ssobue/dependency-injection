@@ -1,17 +1,17 @@
 package jp.sobue.sample.di.service;
 
 /**
- * Sample Service Implementation
+ * Sample Service Interface.
  *
  * @author Sho Sobue
  */
 public interface SampleService {
 
   /**
-   * get data
+   * get data.
    *
    * @param input input value
    * @return get result
    */
-  String get(String input);
+  String get(final String input);
 }
