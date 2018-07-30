@@ -16,7 +16,7 @@ class SampleRepositoryImplUnitTest extends Specification {
       repository.get(null)
 
     then:
-      thrown(Exception)
+      thrown(NullPointerException)
   }
 
   @Unroll

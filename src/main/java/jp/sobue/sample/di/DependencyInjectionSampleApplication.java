@@ -22,7 +22,8 @@ public class DependencyInjectionSampleApplication {
    *
    * @param args command line argument
    */
-  public static void main(final String... args) {
+  public static void main(final String... args)
+      throws InstantiationException, IllegalAccessException, ClassNotFoundException {
     try {
       logger.info("start app");
 
@@ -47,7 +48,7 @@ public class DependencyInjectionSampleApplication {
       // IllegalStatus
       System.err.println(t.getMessage());
       t.printStackTrace();
-      System.exit(1);
+      throw t;
     }
   }
 }
