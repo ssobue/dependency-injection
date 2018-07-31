@@ -15,6 +15,11 @@ public class SampleControllerImpl implements SampleController {
   /** Sample Service. */
   @InjectObject private SampleService sampleService;
 
+  /** Constructor */
+  public SampleControllerImpl(SampleService sampleService) {
+    this.sampleService = sampleService;
+  }
+
   /** {@inheritDoc} */
   @Override
   public String get(final String input) {

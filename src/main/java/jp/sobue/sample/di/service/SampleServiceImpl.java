@@ -15,6 +15,11 @@ public class SampleServiceImpl implements SampleService {
   /** Sample Repository. */
   @InjectObject private SampleRepository repository;
 
+  /** Constructor */
+  public SampleServiceImpl(SampleRepository repository) {
+    this.repository = repository;
+  }
+
   /** {@inheritDoc} */
   @Override
   public String get(final String input) {
