@@ -175,7 +175,7 @@ public class DependencyInjectionContainer {
       logger.debug("target and super classes, interface classes. => classes:{}", classes);
 
       for (Class<?> searchClass : classes) {
-        if (entryClass.equals(searchClass)) {
+        if (targetClass.equals(searchClass)) {
           result.add(object.getValue());
           logger.debug("match container object.");
           break;

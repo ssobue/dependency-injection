@@ -15,6 +15,9 @@ public class SampleControllerImpl implements SampleController {
   /** Sample Service. */
   @InjectObject private SampleService sampleService;
 
+  /** Default Constructor */
+  public SampleControllerImpl() {}
+
   /** Constructor */
   public SampleControllerImpl(SampleService sampleService) {
     this.sampleService = sampleService;

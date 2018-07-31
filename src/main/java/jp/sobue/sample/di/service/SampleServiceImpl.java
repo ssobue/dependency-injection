@@ -15,6 +15,9 @@ public class SampleServiceImpl implements SampleService {
   /** Sample Repository. */
   @InjectObject private SampleRepository repository;
 
+  /** Default Constructor */
+  public SampleServiceImpl() {}
+
   /** Constructor */
   public SampleServiceImpl(SampleRepository repository) {
     this.repository = repository;
