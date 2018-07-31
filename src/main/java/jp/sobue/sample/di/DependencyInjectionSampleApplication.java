@@ -31,7 +31,7 @@ public class DependencyInjectionSampleApplication {
       DependencyInjectionContainer.registObject(
           SampleRepositoryImpl.class.getSimpleName(), new SampleRepositoryImpl());
 
-      logger.info("automated object definition, such as component scan of spring framework");
+      logger.info("automated object definition, search for Implementation annotation");
       String[] basePackages = {"jp.sobue.sample.di.service", "jp.sobue.sample.di.controller"};
       DependencyInjectionContainer.init(basePackages);
 
