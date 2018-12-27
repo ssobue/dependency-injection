@@ -1,7 +1,7 @@
 package jp.sobue.sample.di.controller;
 
-import jp.sobue.sample.di.annotations.Implementation;
-import jp.sobue.sample.di.annotations.InjectObject;
+import javax.inject.Inject;
+import javax.inject.Named;
 import jp.sobue.sample.di.service.SampleService;
 
 /**
@@ -9,23 +9,23 @@ import jp.sobue.sample.di.service.SampleService;
  *
  * @author Sho Sobue
  */
-@Implementation
+@Named
 public class SampleControllerImpl implements SampleController {
 
-  /** Sample Service. */
-  @InjectObject private SampleService sampleService;
+  /** Service. */
+  @Inject private SampleService service;
 
   /** Default Constructor */
   public SampleControllerImpl() {}
 
   /** Constructor */
-  public SampleControllerImpl(SampleService sampleService) {
-    this.sampleService = sampleService;
+  public SampleControllerImpl(SampleService service) {
+    this.service = service;
   }
 
   /** {@inheritDoc} */
   @Override
   public String get(final String input) {
-    return sampleService.get(input);
+    return service.get(input);
   }
 }

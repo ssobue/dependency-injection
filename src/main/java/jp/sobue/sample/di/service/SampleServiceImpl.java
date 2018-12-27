@@ -1,7 +1,7 @@
 package jp.sobue.sample.di.service;
 
-import jp.sobue.sample.di.annotations.Implementation;
-import jp.sobue.sample.di.annotations.InjectObject;
+import javax.inject.Inject;
+import javax.inject.Named;
 import jp.sobue.sample.di.repository.SampleRepository;
 
 /**
@@ -9,11 +9,11 @@ import jp.sobue.sample.di.repository.SampleRepository;
  *
  * @author Sho Sobue
  */
-@Implementation
+@Named
 public class SampleServiceImpl implements SampleService {
 
   /** Sample Repository. */
-  @InjectObject private SampleRepository repository;
+  @Inject private SampleRepository repository;
 
   /** Default Constructor */
   public SampleServiceImpl() {}

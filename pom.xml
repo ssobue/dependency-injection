@@ -43,6 +43,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.sourceEncoding>UTF-8</project.reporting.sourceEncoding>
         <!-- Dependency Version -->
+        <javax.inject.version>1</javax.inject.version>
         <commons-codec.version>1.11</commons-codec.version>
         <logback.version>1.2.3</logback.version>
         <!-- Test Dependency Version -->
@@ -84,6 +85,11 @@
         <dependencies>
             <!-- Dependencies -->
             <dependency>
+                <groupId>javax.inject</groupId>
+                <artifactId>javax.inject</artifactId>
+                <version>${javax.inject.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
                 <version>${commons-codec.version}</version>
@@ -112,6 +118,10 @@
 
     <dependencies>
         <!-- Dependencies -->
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+        </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>

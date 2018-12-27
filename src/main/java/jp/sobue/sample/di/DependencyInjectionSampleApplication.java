@@ -1,6 +1,6 @@
 package jp.sobue.sample.di;
 
-import jp.sobue.sample.di.container.DependencyInjectionContainer;
+import jp.sobue.sample.di.container.Context;
 import jp.sobue.sample.di.controller.SampleController;
 import jp.sobue.sample.di.repository.SampleRepositoryImpl;
 import org.slf4j.Logger;
@@ -28,16 +28,14 @@ public class DependencyInjectionSampleApplication {
       logger.info("start app");
 
       logger.info("manual object definition");
-      DependencyInjectionContainer.registObject(
-          SampleRepositoryImpl.class.getSimpleName(), new SampleRepositoryImpl());
+      Context.register(SampleRepositoryImpl.class.getSimpleName(), new SampleRepositoryImpl());
 
       logger.info("automated object definition, search for Implementation annotation");
       String[] basePackages = {"jp.sobue.sample.di.service", "jp.sobue.sample.di.controller"};
-      DependencyInjectionContainer.init(basePackages);
+      Context.initialize(basePackages);
 
       logger.info("get object from container");
-      SampleController controller =
-          DependencyInjectionContainer.getImplementation(SampleController.class);
+      SampleController controller = Context.getBean(SampleController.class);
 
       logger.info("execute controller");
       logger.info("result = " + controller.get("input"));
