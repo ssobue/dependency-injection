@@ -57,9 +57,9 @@ public class Context {
    */
   public static void initialize(final String... basePackages)
       throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-    logger.info("start scan component objects of base packages");
+    logger.info("start scan objects of base packages");
     createInstances(basePackages);
-    logger.info("start injection object parameters");
+    logger.info("start injection to instance parameters");
     injection();
     logger.trace("container:{}", container);
   }
@@ -83,13 +83,13 @@ public class Context {
       List<String> classes = getClassNames(packageName);
       logger.debug("class list => basePackage:{} classes:{}", packageName, classes);
 
-      // Load Implementation Annotated Classes
+      // Load Named Annotated Classes
       for (String className : classes) {
         Class<?> clazz = Class.forName(className);
         Annotation annotation = clazz.getAnnotation(Named.class);
         if (annotation != null) {
           logger.debug(
-              "class:{} is Implementation annotation presented, regist to container", className);
+              "class:{} is Named annotation presented, regist to container", className);
           container.put(clazz.getSimpleName(), clazz.newInstance());
         }
       }
@@ -106,17 +106,36 @@ public class Context {
     String resourceName = packageName.replace('.', '/');
     ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
     URL root = classLoader.getResource(resourceName);
+    File rootFile = new File(Objects.requireNonNull(root).getFile());
 
-    File[] files =
-        new File(Objects.requireNonNull(root).getFile())
-            .listFiles((dir, name) -> name.endsWith(".class"));
+    // Sub Packages
+    File[] dirs = rootFile.listFiles((dir, name) -> !name.endsWith(".class"));
+    // Classes in current package
+    File[] files = rootFile.listFiles((dir, name) -> name.endsWith(".class"));
 
-    return Arrays.stream(Objects.requireNonNull(files))
-        .parallel()
-        .map(File::getName)
-        .map(name -> name.replaceAll(".class$", ""))
-        .map(name -> packageName + "." + name)
-        .collect(Collectors.toList());
+    // class list
+    List<String> classes = new ArrayList<>();
+
+    if (Objects.nonNull(dirs) && dirs.length > 0) {
+      // Collect Class Names in Sub Packages
+      Arrays.stream(dirs)
+          .map(File::getName)
+          .map(d -> getClassNames(packageName + "." + d))
+          .forEach(classes::addAll);
+      logger.debug("class list in sub package => basePackage:{} classes:{}", packageName, classes);
+    }
+
+    if (Objects.nonNull(files) && files.length > 0) {
+      // Collect Class Names in Current Packages
+      classes.addAll(
+          Arrays.stream(files)
+              .map(File::getName)
+              .map(name -> name.replaceAll(".class$", ""))
+              .map(name -> packageName + "." + name)
+              .collect(Collectors.toList()));
+    }
+
+    return classes;
   }
 
   /**
@@ -132,7 +151,9 @@ public class Context {
       for (Field field : clazz.getDeclaredFields()) {
         if (!field.isAnnotationPresent(Inject.class)) {
           logger.debug(
-              "Inject annotation is not presented. class:{} field:{}", clazz.getName(), field.getName());
+              "Inject annotation is not presented. class:{} field:{}",
+              clazz.getName(),
+              field.getName());
           continue;
         }
 

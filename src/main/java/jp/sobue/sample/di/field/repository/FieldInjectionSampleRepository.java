@@ -1,11 +1,11 @@
-package jp.sobue.sample.di.repository;
+package jp.sobue.sample.di.field.repository;
 
 /**
  * Sample Repository Interface.
  *
  * @author Sho Sobue
  */
-public interface SampleRepository {
+public interface FieldInjectionSampleRepository {
 
   /**
    * get data.

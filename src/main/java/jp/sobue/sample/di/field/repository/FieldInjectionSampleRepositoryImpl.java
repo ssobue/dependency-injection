@@ -1,6 +1,7 @@
-package jp.sobue.sample.di.repository;
+package jp.sobue.sample.di.field.repository;
 
 import java.security.MessageDigest;
+import javax.inject.Named;
 import org.apache.commons.codec.binary.Hex;
 
 /**
@@ -8,7 +9,8 @@ import org.apache.commons.codec.binary.Hex;
  *
  * @author Sho Sobue
  */
-public class SampleRepositoryImpl implements SampleRepository {
+@Named
+public class FieldInjectionSampleRepositoryImpl implements FieldInjectionSampleRepository {
 
   /** Hash Algorithm. */
   private static final String HASH_ALGORITHM = "SHA-256";

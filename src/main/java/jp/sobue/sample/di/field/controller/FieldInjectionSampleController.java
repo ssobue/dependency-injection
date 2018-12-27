@@ -1,11 +1,11 @@
-package jp.sobue.sample.di.controller;
+package jp.sobue.sample.di.field.controller;
 
 /**
  * Sample Controller Interface.
  *
  * @author Sho Sobue
  */
-public interface SampleController {
+public interface FieldInjectionSampleController {
 
   /**
    * get data.

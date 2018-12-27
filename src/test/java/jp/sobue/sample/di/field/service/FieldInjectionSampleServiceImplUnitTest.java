@@ -1,6 +1,6 @@
-package jp.sobue.sample.di.controller;
+package jp.sobue.sample.di.field.service;
 
-import jp.sobue.sample.di.service.SampleService;
+import jp.sobue.sample.di.field.repository.FieldInjectionSampleRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,16 +9,16 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class SampleControllerImplUnitTest {
+public class FieldInjectionSampleServiceImplUnitTest {
 
-  private SampleController controller;
+  private FieldInjectionSampleService service;
 
-  private SampleService sampleService;
+  private FieldInjectionSampleRepository repository;
 
   @Before
   public void setup() {
-    sampleService = mock(SampleService.class);
-    controller = new SampleControllerImpl(sampleService);
+    repository = mock(FieldInjectionSampleRepository.class);
+    service = new FieldInjectionSampleServiceImpl(repository);
   }
 
   @Test
@@ -37,9 +37,9 @@ public class SampleControllerImplUnitTest {
   }
 
   private void runTest(String input) {
-    when(sampleService.get(anyString())).thenReturn(input);
+    when(repository.get(anyString())).thenReturn(input);
 
-    String result = controller.get(input);
+    String result = service.get(input);
 
     Assert.assertEquals(input, result);
   }

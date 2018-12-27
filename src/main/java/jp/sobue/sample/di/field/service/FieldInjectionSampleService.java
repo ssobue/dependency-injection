@@ -1,11 +1,11 @@
-package jp.sobue.sample.di.service;
+package jp.sobue.sample.di.field.service;
 
 /**
  * Sample Service Interface.
  *
  * @author Sho Sobue
  */
-public interface SampleService {
+public interface FieldInjectionSampleService {
 
   /**
    * get data.

@@ -1,8 +1,7 @@
 package jp.sobue.sample.di;
 
 import jp.sobue.sample.di.container.Context;
-import jp.sobue.sample.di.controller.SampleController;
-import jp.sobue.sample.di.repository.SampleRepositoryImpl;
+import jp.sobue.sample.di.field.controller.FieldInjectionSampleController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,18 +26,18 @@ public class DependencyInjectionSampleApplication {
     try {
       logger.info("start app");
 
-      logger.info("manual object definition");
-      Context.register(SampleRepositoryImpl.class.getSimpleName(), new SampleRepositoryImpl());
+      logger.info("automated object definition, search for Named annotation");
+      Context.initialize(DependencyInjectionSampleApplication.class.getPackage().getName());
 
-      logger.info("automated object definition, search for Implementation annotation");
-      String[] basePackages = {"jp.sobue.sample.di.service", "jp.sobue.sample.di.controller"};
-      Context.initialize(basePackages);
+      logger.info("-------- start field injection test run --------");
 
       logger.info("get object from container");
-      SampleController controller = Context.getBean(SampleController.class);
+      FieldInjectionSampleController controller = Context.getBean(FieldInjectionSampleController.class);
 
       logger.info("execute controller");
       logger.info("result = " + controller.get("input"));
+
+      logger.info("-------- end field injection test run --------");
 
       logger.info("end app");
 

@@ -1,16 +1,16 @@
-package jp.sobue.sample.di.repository;
+package jp.sobue.sample.di.field.repository;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SampleRepositoryImplUnitTest {
+public class FieldInjectionSampleRepositoryImplUnitTest {
 
-  private SampleRepository repository;
+  private FieldInjectionSampleRepository repository;
 
   @Before
   public void setup() {
-    repository = new SampleRepositoryImpl();
+    repository = new FieldInjectionSampleRepositoryImpl();
   }
 
   @Test
