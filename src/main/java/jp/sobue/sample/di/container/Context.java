@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -131,7 +130,7 @@ public class Context {
 
     if (Objects.nonNull(dirs) && dirs.length > 0) {
       // Collect Class Names in Sub Packages
-      Arrays.stream(dirs)
+      Stream.of(dirs)
           .map(File::getName)
           .map(d -> getClassNames(packageName + "." + d))
           .forEach(classes::addAll);
@@ -141,7 +140,7 @@ public class Context {
     if (Objects.nonNull(files) && files.length > 0) {
       // Collect Class Names in Current Packages
       classes.addAll(
-          Arrays.stream(files)
+          Stream.of(files)
               .map(File::getName)
               .map(name -> name.replaceAll(".class$", ""))
               .map(name -> packageName + "." + name)
@@ -151,41 +150,44 @@ public class Context {
     return classes;
   }
 
-  /**
-   * inject object to annotated {@link Inject} fields in class.
-   *
-   * @throws IllegalAccessException not accessible class
-   */
-  private static void injection() throws IllegalAccessException {
-    for (Entry<String, Object> object : container.entrySet()) {
-      Class<?> clazz = object.getValue().getClass();
-      logger.debug("start injection => class:{}", clazz.getName());
+  /** inject object to annotated {@link Inject} fields in class. */
+  private static void injection() {
+    container.forEach(
+        (k, v) -> {
+          Class<?> clazz = v.getClass();
+          logger.debug("start injection => class:{}", clazz.getName());
 
-      for (Field field : clazz.getDeclaredFields()) {
-        if (!field.isAnnotationPresent(Inject.class)) {
-          logger.debug(
-              "Inject annotation is not presented. class:{} field:{}",
-              clazz.getName(),
-              field.getName());
-          continue;
-        }
+          for (Field field : clazz.getDeclaredFields()) {
+            if (!field.isAnnotationPresent(Inject.class)) {
+              logger.debug(
+                  "Inject annotation is not presented. class:{} field:{}",
+                  clazz.getName(),
+                  field.getName());
+              continue;
+            }
 
-        boolean modifyAccessible = false;
-        if (!field.trySetAccessible()) {
-          modifyAccessible = true;
-          field.setAccessible(true);
-        }
+            boolean modifyAccessible = false;
+            if (!field.trySetAccessible()) {
+              modifyAccessible = true;
+              field.setAccessible(true);
+            }
 
-        logger.debug(
-            "Inject annotation is presented. class:{} field:{}", clazz.getName(), field.getName());
-        logger.debug("start search object from container by class type");
-        field.set(object.getValue(), getBean(field.getType()));
+            logger.debug(
+                "Inject annotation is presented. class:{} field:{}",
+                clazz.getName(),
+                field.getName());
+            logger.debug("start search object from container by class type");
+            try {
+              field.set(v, getBean(field.getType()));
+            } catch (IllegalAccessException e) {
+              throw new RuntimeException(e);
+            }
 
-        if (modifyAccessible) {
-          field.setAccessible(false);
-        }
-      }
-    }
+            if (modifyAccessible) {
+              field.setAccessible(false);
+            }
+          }
+        });
   }
 
   /**
@@ -199,24 +201,26 @@ public class Context {
     logger.debug("search for object for class:{}", targetClass.getName());
 
     List<Object> result = new ArrayList<>();
-    for (Entry<String, Object> object : container.entrySet()) {
-      Class<?> entryClass = object.getValue().getClass();
 
-      List<Class<?>> classes = new ArrayList<>();
-      classes.add(entryClass);
-      classes.addAll(getSuperClasses(new ArrayList<>(), entryClass));
-      classes.addAll(Arrays.asList(entryClass.getInterfaces()));
+    container.forEach(
+        (k, v) -> {
+          Class<?> entryClass = v.getClass();
 
-      logger.debug("target and super classes, interface classes. => classes:{}", classes);
+          List<Class<?>> classes = new ArrayList<>();
+          classes.add(entryClass);
+          classes.addAll(getSuperClasses(new ArrayList<>(), entryClass));
+          classes.addAll(Arrays.asList(entryClass.getInterfaces()));
 
-      for (Class<?> searchClass : classes) {
-        if (targetClass.equals(searchClass)) {
-          result.add(object.getValue());
-          logger.debug("match container object.");
-          break;
-        }
-      }
-    }
+          logger.debug("target and super classes, interface classes. => classes:{}", classes);
+
+          for (Class<?> searchClass : classes) {
+            if (targetClass.equals(searchClass)) {
+              result.add(v);
+              logger.debug("match container object.");
+              break;
+            }
+          }
+        });
 
     if (result.size() == 0) {
       throw new IllegalStateException("no object");
