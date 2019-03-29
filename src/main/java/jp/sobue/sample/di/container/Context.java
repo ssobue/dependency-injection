@@ -3,6 +3,7 @@ package jp.sobue.sample.di.container;
 import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +13,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.slf4j.Logger;
@@ -56,7 +58,8 @@ public class Context {
    * @throws IllegalAccessException not accessible class
    */
   public static void initialize(final String... basePackages)
-      throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+      throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+          InvocationTargetException {
     logger.info("start scan objects of base packages");
     createInstances(basePackages);
     logger.info("start injection to instance parameters");
@@ -73,7 +76,8 @@ public class Context {
    * @throws IllegalAccessException not accessible class
    */
   private static void createInstances(final String... basePackages)
-      throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+      throws ClassNotFoundException, InstantiationException, IllegalAccessException,
+          InvocationTargetException {
     // Scan Implementation Classes
     logger.debug("scan => basePackages:{}", Arrays.asList(basePackages));
     for (String packageName : basePackages) {
@@ -88,9 +92,18 @@ public class Context {
         Class<?> clazz = Class.forName(className);
         Annotation annotation = clazz.getAnnotation(Named.class);
         if (annotation != null) {
-          logger.debug(
-              "class:{} is Named annotation presented, regist to container", className);
-          container.put(clazz.getSimpleName(), clazz.newInstance());
+          logger.debug("class:{} is Named annotation presented, register to container", className);
+          if (Stream.of(clazz.getDeclaredConstructors())
+              .noneMatch(c -> c.getParameterCount() == 0)) {
+            throw new InstantiationException("no default constructor");
+          }
+          container.put(
+              clazz.getSimpleName(),
+              Stream.of(clazz.getDeclaredConstructors())
+                  .filter(c -> c.getParameterCount() == 0)
+                  .findFirst()
+                  .get()
+                  .newInstance());
         }
       }
     }
@@ -158,7 +171,7 @@ public class Context {
         }
 
         boolean modifyAccessible = false;
-        if (!field.isAccessible()) {
+        if (!field.trySetAccessible()) {
           modifyAccessible = true;
           field.setAccessible(true);
         }

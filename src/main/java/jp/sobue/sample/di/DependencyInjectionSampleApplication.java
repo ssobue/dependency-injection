@@ -1,5 +1,6 @@
 package jp.sobue.sample.di;
 
+import java.lang.reflect.InvocationTargetException;
 import jp.sobue.sample.di.container.Context;
 import jp.sobue.sample.di.field.controller.FieldInjectionSampleController;
 import org.slf4j.Logger;
@@ -22,7 +23,8 @@ public class DependencyInjectionSampleApplication {
    * @param args command line argument
    */
   public static void main(final String... args)
-      throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+      throws InstantiationException, IllegalAccessException, ClassNotFoundException,
+          InvocationTargetException {
     try {
       logger.info("start app");
 
@@ -32,7 +34,8 @@ public class DependencyInjectionSampleApplication {
       logger.info("-------- start field injection test run --------");
 
       logger.info("get object from container");
-      FieldInjectionSampleController controller = Context.getBean(FieldInjectionSampleController.class);
+      FieldInjectionSampleController controller =
+          Context.getBean(FieldInjectionSampleController.class);
 
       logger.info("execute controller");
       logger.info("result = " + controller.get("input"));
