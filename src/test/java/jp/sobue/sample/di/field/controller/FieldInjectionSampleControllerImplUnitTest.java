@@ -11,7 +11,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-class FieldInjectionSampleControllerImplUnitTest {
+public class FieldInjectionSampleControllerImplUnitTest {
 
   private FieldInjectionSampleController controller;
 
