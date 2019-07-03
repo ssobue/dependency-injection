@@ -1,41 +1,38 @@
 package jp.sobue.sample.di.field.repository;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
-public class FieldInjectionSampleRepositoryImplUnitTest {
+class FieldInjectionSampleRepositoryImplUnitTest {
 
   private FieldInjectionSampleRepository repository;
 
-  @Before
-  public void setup() {
+  @BeforeEach
+  void setup() {
     repository = new FieldInjectionSampleRepositoryImpl();
   }
 
   @Test
-  public void inputNull() {
+  void inputNull() {
     try {
       repository.get(null);
-      Assert.fail();
+      Assertions.fail();
     } catch (NullPointerException e) {
-      Assert.assertTrue(true);
+      Assertions.assertTrue(true);
     }
   }
 
-  @Test
-  public void inputEmpty() {
-    runTest("", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855");
-  }
-
-  @Test
-  public void inputNonEmpty() {
-    runTest("abc", "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad");
-  }
-
-  private void runTest(String input, String answer) {
+  @ParameterizedTest
+  @CsvSource({
+      "'',e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "abc,ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+  })
+  void runTest(String input, String answer) {
     String result = repository.get(input);
 
-    Assert.assertEquals(answer, result);
+    Assertions.assertEquals(answer, result);
   }
 }

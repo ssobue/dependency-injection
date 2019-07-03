@@ -5,42 +5,32 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import jp.sobue.sample.di.field.service.FieldInjectionSampleService;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 
-public class FieldInjectionSampleControllerImplUnitTest {
+class FieldInjectionSampleControllerImplUnitTest {
 
   private FieldInjectionSampleController controller;
 
   private FieldInjectionSampleService fieldInjectionSampleService;
 
-  @Before
-  public void setup() {
+  @BeforeEach
+  void setup() {
     fieldInjectionSampleService = mock(FieldInjectionSampleService.class);
     controller = new FieldInjectionSampleControllerImpl(fieldInjectionSampleService);
   }
 
-  @Test
-  public void inputNull() {
-    runTest(null);
-  }
-
-  @Test
-  public void inputEmpty() {
-    runTest("");
-  }
-
-  @Test
-  public void inputNonEmpty() {
-    runTest("abc");
-  }
-
-  private void runTest(String input) {
+  @ParameterizedTest
+  @NullAndEmptySource
+  @ValueSource(strings = {"abc"})
+  void inputTest(String input) {
     when(fieldInjectionSampleService.get(anyString())).thenReturn(input);
 
     String result = controller.get(input);
 
-    Assert.assertEquals(input, result);
+    Assertions.assertEquals(input, result);
   }
 }

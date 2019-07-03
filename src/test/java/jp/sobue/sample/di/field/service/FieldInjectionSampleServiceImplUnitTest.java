@@ -5,42 +5,32 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import jp.sobue.sample.di.field.repository.FieldInjectionSampleRepository;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 
-public class FieldInjectionSampleServiceImplUnitTest {
+class FieldInjectionSampleServiceImplUnitTest {
 
   private FieldInjectionSampleService service;
 
   private FieldInjectionSampleRepository repository;
 
-  @Before
-  public void setup() {
+  @BeforeEach
+  void setup() {
     repository = mock(FieldInjectionSampleRepository.class);
     service = new FieldInjectionSampleServiceImpl(repository);
   }
 
-  @Test
-  public void inputNull() {
-    runTest(null);
-  }
-
-  @Test
-  public void inputEmpty() {
-    runTest("");
-  }
-
-  @Test
-  public void inputNonEmpty() {
-    runTest("abc");
-  }
-
-  private void runTest(String input) {
+  @ParameterizedTest
+  @NullAndEmptySource
+  @ValueSource(strings = {"abc"})
+  void inputTest(String input) {
     when(repository.get(anyString())).thenReturn(input);
 
     String result = service.get(input);
 
-    Assert.assertEquals(input, result);
+    Assertions.assertEquals(input, result);
   }
 }
