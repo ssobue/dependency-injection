@@ -12,18 +12,28 @@ import jp.sobue.sample.di.field.service.FieldInjectionSampleService;
 @Named
 public class FieldInjectionSampleControllerImpl implements FieldInjectionSampleController {
 
-  /** Service. */
-  @Inject private FieldInjectionSampleService service;
+  /**
+   * Service.
+   */
+  @Inject
+  private FieldInjectionSampleService service;
 
-  /** Default Constructor */
-  public FieldInjectionSampleControllerImpl() {}
+  /**
+   * Default Constructor
+   */
+  public FieldInjectionSampleControllerImpl() {
+  }
 
-  /** Constructor */
+  /**
+   * Constructor
+   */
   public FieldInjectionSampleControllerImpl(FieldInjectionSampleService service) {
     this.service = service;
   }
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public String get(final String input) {
     return service.get(input);

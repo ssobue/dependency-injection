@@ -13,7 +13,9 @@ import org.slf4j.LoggerFactory;
  */
 public class DependencyInjectionSampleApplication {
 
-  /** Logger. */
+  /**
+   * Logger.
+   */
   private static final Logger logger =
       LoggerFactory.getLogger(DependencyInjectionSampleApplication.class);
 
@@ -24,7 +26,7 @@ public class DependencyInjectionSampleApplication {
    */
   public static void main(final String... args)
       throws InstantiationException, IllegalAccessException, ClassNotFoundException,
-          InvocationTargetException {
+      InvocationTargetException {
     try {
       logger.info("start app");
 

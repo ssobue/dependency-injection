@@ -25,10 +25,14 @@ import org.slf4j.LoggerFactory;
  */
 public class Context {
 
-  /** Logger. */
+  /**
+   * Logger.
+   */
   private static final Logger logger = LoggerFactory.getLogger(Context.class);
 
-  /** Container Object. */
+  /**
+   * Container Object.
+   */
   private static final Map<String, Object> container = new ConcurrentHashMap<>();
 
   // for trace log
@@ -48,8 +52,7 @@ public class Context {
   }
 
   /**
-   * initialize container: scan {@link Named} annotations and inject object to annotated {@link
-   * Inject}.
+   * initialize container: scan {@link Named} annotations and inject object to annotated {@link Inject}.
    *
    * @param basePackages scan packages
    * @throws ClassNotFoundException unknown class specified
@@ -58,7 +61,7 @@ public class Context {
    */
   public static void initialize(final String... basePackages)
       throws ClassNotFoundException, InstantiationException, IllegalAccessException,
-          InvocationTargetException {
+      InvocationTargetException {
     logger.info("start scan objects of base packages");
     createInstances(basePackages);
     logger.info("start injection to instance parameters");
@@ -76,7 +79,7 @@ public class Context {
    */
   private static void createInstances(final String... basePackages)
       throws ClassNotFoundException, InstantiationException, IllegalAccessException,
-          InvocationTargetException {
+      InvocationTargetException {
     // Scan Implementation Classes
     logger.debug("scan => basePackages:{}", Arrays.asList(basePackages));
     for (String packageName : basePackages) {
@@ -150,7 +153,9 @@ public class Context {
     return classes;
   }
 
-  /** inject object to annotated {@link Inject} fields in class. */
+  /**
+   * inject object to annotated {@link Inject} fields in class.
+   */
   private static void injection() {
     container.forEach(
         (k, v) -> {

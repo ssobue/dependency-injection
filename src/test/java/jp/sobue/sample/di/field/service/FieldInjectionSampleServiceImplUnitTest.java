@@ -1,13 +1,13 @@
 package jp.sobue.sample.di.field.service;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import jp.sobue.sample.di.field.repository.FieldInjectionSampleRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class FieldInjectionSampleServiceImplUnitTest {
 

@@ -12,7 +12,9 @@ import org.apache.commons.codec.binary.Hex;
 @Named
 public class FieldInjectionSampleRepositoryImpl implements FieldInjectionSampleRepository {
 
-  /** Hash Algorithm. */
+  /**
+   * Hash Algorithm.
+   */
   private static final String HASH_ALGORITHM = "SHA-256";
 
   /**
