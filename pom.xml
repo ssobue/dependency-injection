@@ -5,13 +5,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>jp.sobue.sample</groupId>
+    <groupId>dev.sobue.sample</groupId>
     <artifactId>dependency-injection</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>dependency-injection</name>
-    <description>Sample Code of Dependency Injection</description>
+    <name>Sample Code of Dependency Injection</name>
 
     <url>https://github.com/ssobue/dependency-injection</url>
 
