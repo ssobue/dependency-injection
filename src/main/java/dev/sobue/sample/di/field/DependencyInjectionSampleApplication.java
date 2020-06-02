@@ -40,7 +40,7 @@ public class DependencyInjectionSampleApplication {
           Context.getBean(FieldInjectionSampleController.class);
 
       logger.info("execute controller");
-      logger.info("result = " + controller.get("input"));
+      logger.info("result = {}", controller.get("input"));
 
       logger.info("-------- end field injection test run --------");
 

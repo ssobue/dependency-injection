@@ -228,7 +228,7 @@ public abstract class Context {
           }
         });
 
-    if (result.size() == 0) {
+    if (result.isEmpty()) {
       throw new IllegalStateException("no object");
     }
 
