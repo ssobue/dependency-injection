@@ -1,6 +1,5 @@
 target/
-!.mvn/wrapper/maven-wrapper.jar
-*.md
+.clover
 
 ### STS ###
 .apt_generated

@@ -1,8 +1,8 @@
-package jp.sobue.sample.di.field.controller;
+package dev.sobue.sample.di.field.controller;
 
+import dev.sobue.sample.di.field.service.FieldInjectionSampleService;
 import javax.inject.Inject;
 import javax.inject.Named;
-import jp.sobue.sample.di.field.service.FieldInjectionSampleService;
 
 /**
  * Sample Controller Implementation.

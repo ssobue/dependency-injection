@@ -1,4 +1,4 @@
-package jp.sobue.sample.di.container;
+package dev.sobue.sample.di.field.container;
 
 import java.io.File;
 import java.lang.annotation.Annotation;
@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Sho Sobue
  */
-public class Context {
+public abstract class Context {
 
   /**
    * Logger.
@@ -52,7 +52,8 @@ public class Context {
   }
 
   /**
-   * initialize container: scan {@link Named} annotations and inject object to annotated {@link Inject}.
+   * initialize container: scan {@link Named} annotations and inject object to annotated {@link
+   * Inject}.
    *
    * @param basePackages scan packages
    * @throws ClassNotFoundException unknown class specified

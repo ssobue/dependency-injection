@@ -1,8 +1,8 @@
-package jp.sobue.sample.di;
+package dev.sobue.sample.di.field;
 
+import dev.sobue.sample.di.field.container.Context;
+import dev.sobue.sample.di.field.controller.FieldInjectionSampleController;
 import java.lang.reflect.InvocationTargetException;
-import jp.sobue.sample.di.container.Context;
-import jp.sobue.sample.di.field.controller.FieldInjectionSampleController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

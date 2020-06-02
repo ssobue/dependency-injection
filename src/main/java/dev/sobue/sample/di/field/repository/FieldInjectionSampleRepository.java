@@ -1,4 +1,4 @@
-package jp.sobue.sample.di.field.repository;
+package dev.sobue.sample.di.field.repository;
 
 /**
  * Sample Repository Interface.

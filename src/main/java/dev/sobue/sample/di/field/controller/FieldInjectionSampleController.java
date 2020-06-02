@@ -1,4 +1,4 @@
-package jp.sobue.sample.di.field.controller;
+package dev.sobue.sample.di.field.controller;
 
 /**
  * Sample Controller Interface.

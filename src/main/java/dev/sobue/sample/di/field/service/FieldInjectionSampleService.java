@@ -1,4 +1,4 @@
-package jp.sobue.sample.di.field.service;
+package dev.sobue.sample.di.field.service;
 
 /**
  * Sample Service Interface.

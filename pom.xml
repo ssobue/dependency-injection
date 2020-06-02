@@ -25,10 +25,13 @@
         <url>https://circleci.com/gh/ssobue/dependency-injection</url>
     </ciManagement>
 
-    <organization>
-        <name>Sho Sobue</name>
-        <url>https://github.com/ssobue</url>
-    </organization>
+    <developers>
+        <developer>
+            <id>ssobue</id>
+            <name>Sho SOBUE</name>
+            <organizationUrl>https://github.com/ssobue</organizationUrl>
+        </developer>
+    </developers>
 
     <scm>
         <url>http://github.com/ssobue/dependency-injection</url>
@@ -43,26 +46,27 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.sourceEncoding>UTF-8</project.reporting.sourceEncoding>
         <!-- Dependency Version -->
-        <javax.inject.version>1</javax.inject.version>
-        <commons-codec.version>1.12</commons-codec.version>
+        <jakarta.inject-api.version>1.0.1</jakarta.inject-api.version>
+        <commons-codec.version>1.14</commons-codec.version>
         <logback.version>1.2.3</logback.version>
         <!-- Test Dependency Version -->
-        <junit.version>5.5.0</junit.version>
-        <mockit.version>2.28.2</mockit.version>
+        <junit.version>5.6.2</junit.version>
+        <mockit.version>3.3.3</mockit.version>
         <!-- Plugin Version -->
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-        <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
-        <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
+        <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
+        <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
         <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
-        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
-        <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
-        <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M4</maven-surefire-plugin.version>
+        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+        <maven-site-plugin.version>3.9.0</maven-site-plugin.version>
         <maven-jxr-plugin.version>3.0.0</maven-jxr-plugin.version>
-        <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
-        <maven-pmd-plugin.version>3.11.0</maven-pmd-plugin.version>
-        <maven-javadoc-plugin.version>3.1.0</maven-javadoc-plugin.version>
-        <jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
+        <maven-project-info-reports-plugin.version>3.1.0</maven-project-info-reports-plugin.version>
+        <maven-pmd-plugin.version>3.13.0</maven-pmd-plugin.version>
+        <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+        <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
+        <clover-maven-plugin.version>4.4.1</clover-maven-plugin.version>
     </properties>
 
     <distributionManagement>
@@ -84,9 +88,9 @@
         <dependencies>
             <!-- Dependencies -->
             <dependency>
-                <groupId>javax.inject</groupId>
-                <artifactId>javax.inject</artifactId>
-                <version>${javax.inject.version}</version>
+                <groupId>jakarta.inject</groupId>
+                <artifactId>jakarta.inject-api</artifactId>
+                <version>${jakarta.inject-api.version}</version>
             </dependency>
             <dependency>
                 <groupId>commons-codec</groupId>
@@ -102,25 +106,19 @@
             <!-- Test Dependencies -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
                 <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-params</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>org.mockito</groupId>
-                <artifactId>mockito-core</artifactId>
+                <artifactId>mockito-junit-jupiter</artifactId>
                 <version>${mockit.version}</version>
                 <scope>test</scope>
             </dependency>
@@ -130,8 +128,8 @@
     <dependencies>
         <!-- Dependencies -->
         <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
+            <groupId>jakarta.inject</groupId>
+            <artifactId>jakarta.inject-api</artifactId>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
@@ -145,22 +143,12 @@
         <!-- Test Dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
+            <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
+            <artifactId>mockito-junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -191,21 +179,6 @@
                                 </requireJavaVersion>
                             </rules>
                         </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <version>${maven-pmd-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>validate</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>pmd</goal>
-                            <goal>cpd</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -249,6 +222,24 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>${maven-pmd-plugin.version}</version>
+                <configuration>
+                    <printFailingErrors>true</printFailingErrors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>process-test-classes</id>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>pmd</goal>
+                            <goal>cpd</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
@@ -289,15 +280,6 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>${maven-surefire-plugin.version}</version>
-                <configuration>
-                    <linkXRef>true</linkXRef>
-                    <showSuccess>true</showSuccess>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${maven-javadoc-plugin.version}</version>
             </plugin>
@@ -329,10 +311,6 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-report-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
             </plugin>
             <plugin>
@@ -349,4 +327,125 @@
             </plugin>
         </plugins>
     </reporting>
+
+    <profiles>
+        <profile>
+            <id>clover</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.openclover</groupId>
+                        <artifactId>clover-maven-plugin</artifactId>
+                        <version>${clover-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>default-clean</id>
+                                <phase>clean</phase>
+                                <goals>
+                                    <goal>clean</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>setup</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>setup</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>aggregate</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>aggregate</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>clover</id>
+                                <phase>site</phase>
+                                <goals>
+                                    <goal>clover</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jxr-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-site</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-pmd-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>validate</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>default-site</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>validate</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>default-site</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>validate</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>default-site</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>default-site</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-site-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-site</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

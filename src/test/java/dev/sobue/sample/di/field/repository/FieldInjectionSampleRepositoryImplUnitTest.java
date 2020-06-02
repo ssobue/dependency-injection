@@ -1,4 +1,4 @@
-package jp.sobue.sample.di.field.repository;
+package dev.sobue.sample.di.field.repository;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
