@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -48,6 +48,7 @@
         <jakarta.inject-api.version>1.0.1</jakarta.inject-api.version>
         <commons-codec.version>1.14</commons-codec.version>
         <logback.version>1.2.3</logback.version>
+        <lombok.version>1.18.12</lombok.version>
         <!-- Test Dependency Version -->
         <junit.version>5.6.2</junit.version>
         <mockit.version>3.3.3</mockit.version>
@@ -102,6 +103,14 @@
                 <version>${logback.version}</version>
             </dependency>
 
+            <!-- https://projectlombok.org/setup/maven -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
             <!-- Test Dependencies -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
@@ -137,6 +146,11 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
 
         <!-- Test Dependencies -->

@@ -1,6 +1,9 @@
 package dev.sobue.sample.di.field.repository;
 
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,9 +22,9 @@ public class FieldInjectionSampleRepositoryImplUnitTest {
   void inputNull() {
     try {
       repository.get(null);
-      Assertions.fail();
+      fail();
     } catch (NullPointerException e) {
-      Assertions.assertTrue(true);
+      assertTrue(true);
     }
   }
 
@@ -31,8 +34,6 @@ public class FieldInjectionSampleRepositoryImplUnitTest {
       "abc,ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
   })
   void runTest(String input, String answer) {
-    String result = repository.get(input);
-
-    Assertions.assertEquals(answer, result);
+    assertEquals(answer, repository.get(input));
   }
 }

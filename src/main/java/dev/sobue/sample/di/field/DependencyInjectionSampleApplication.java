@@ -3,21 +3,15 @@ package dev.sobue.sample.di.field;
 import dev.sobue.sample.di.field.container.Context;
 import dev.sobue.sample.di.field.controller.FieldInjectionSampleController;
 import java.lang.reflect.InvocationTargetException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Dependency Injection Sample Application.
  *
  * @author Sho Sobue
  */
+@Slf4j
 public class DependencyInjectionSampleApplication {
-
-  /**
-   * Logger.
-   */
-  private static final Logger logger =
-      LoggerFactory.getLogger(DependencyInjectionSampleApplication.class);
 
   /**
    * Main Method.
@@ -28,23 +22,23 @@ public class DependencyInjectionSampleApplication {
       throws InstantiationException, IllegalAccessException, ClassNotFoundException,
       InvocationTargetException {
     try {
-      logger.info("start app");
+      log.info("start app");
 
-      logger.info("automated object definition, search for Named annotation");
+      log.info("automated object definition, search for Named annotation");
       Context.initialize(DependencyInjectionSampleApplication.class.getPackage().getName());
 
-      logger.info("-------- start field injection test run --------");
+      log.info("-------- start field injection test run --------");
 
-      logger.info("get object from container");
+      log.info("get object from container");
       FieldInjectionSampleController controller =
           Context.getBean(FieldInjectionSampleController.class);
 
-      logger.info("execute controller");
-      logger.info("result = {}", controller.get("input"));
+      log.info("execute controller");
+      log.info("result = {}", controller.get("input"));
 
-      logger.info("-------- end field injection test run --------");
+      log.info("-------- end field injection test run --------");
 
-      logger.info("end app");
+      log.info("end app");
 
     } catch (Throwable t) {
       // IllegalStatus

@@ -15,20 +15,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Dependency Injection Container Implementation.
  *
  * @author Sho Sobue
  */
+@Slf4j
 public abstract class Context {
-
-  /**
-   * Logger.
-   */
-  private static final Logger logger = LoggerFactory.getLogger(Context.class);
 
   /**
    * Container Object.
@@ -37,7 +32,7 @@ public abstract class Context {
 
   // for trace log
   static {
-    logger.trace("container:{}", container);
+    log.trace("container:{}", container);
   }
 
   /**
@@ -48,7 +43,7 @@ public abstract class Context {
    */
   public static void register(final String id, final Object object) {
     container.put(id, object);
-    logger.trace("container:{}", container);
+    log.trace("container:{}", container);
   }
 
   /**
@@ -63,11 +58,11 @@ public abstract class Context {
   public static void initialize(final String... basePackages)
       throws ClassNotFoundException, InstantiationException, IllegalAccessException,
       InvocationTargetException {
-    logger.info("start scan objects of base packages");
+    log.info("start scan objects of base packages");
     createInstances(basePackages);
-    logger.info("start injection to instance parameters");
+    log.info("start injection to instance parameters");
     injection();
-    logger.trace("container:{}", container);
+    log.trace("container:{}", container);
   }
 
   /**
@@ -82,20 +77,20 @@ public abstract class Context {
       throws ClassNotFoundException, InstantiationException, IllegalAccessException,
       InvocationTargetException {
     // Scan Implementation Classes
-    logger.debug("scan => basePackages:{}", Arrays.asList(basePackages));
+    log.debug("scan => basePackages:{}", Arrays.asList(basePackages));
     for (String packageName : basePackages) {
-      logger.debug("scan => basePackage:{}", packageName);
+      log.debug("scan => basePackage:{}", packageName);
 
       // Get Class Name List
       List<String> classes = getClassNames(packageName);
-      logger.debug("class list => basePackage:{} classes:{}", packageName, classes);
+      log.debug("class list => basePackage:{} classes:{}", packageName, classes);
 
       // Load Named Annotated Classes
       for (String className : classes) {
         Class<?> clazz = Class.forName(className);
         Annotation annotation = clazz.getAnnotation(Named.class);
         if (annotation != null) {
-          logger.debug("class:{} is Named annotation presented, register to container", className);
+          log.debug("class:{} is Named annotation presented, register to container", className);
           if (Stream.of(clazz.getDeclaredConstructors())
               .noneMatch(c -> c.getParameterCount() == 0)) {
             throw new InstantiationException("no default constructor");
@@ -138,7 +133,7 @@ public abstract class Context {
           .map(File::getName)
           .map(d -> getClassNames(packageName + "." + d))
           .forEach(classes::addAll);
-      logger.debug("class list in sub package => basePackage:{} classes:{}", packageName, classes);
+      log.debug("class list in sub package => basePackage:{} classes:{}", packageName, classes);
     }
 
     if (Objects.nonNull(files) && files.length > 0) {
@@ -161,11 +156,11 @@ public abstract class Context {
     container.forEach(
         (k, v) -> {
           Class<?> clazz = v.getClass();
-          logger.debug("start injection => class:{}", clazz.getName());
+          log.debug("start injection => class:{}", clazz.getName());
 
           for (Field field : clazz.getDeclaredFields()) {
             if (!field.isAnnotationPresent(Inject.class)) {
-              logger.debug(
+              log.debug(
                   "Inject annotation is not presented. class:{} field:{}",
                   clazz.getName(),
                   field.getName());
@@ -178,11 +173,11 @@ public abstract class Context {
               field.setAccessible(true);
             }
 
-            logger.debug(
+            log.debug(
                 "Inject annotation is presented. class:{} field:{}",
                 clazz.getName(),
                 field.getName());
-            logger.debug("start search object from container by class type");
+            log.debug("start search object from container by class type");
             try {
               field.set(v, getBean(field.getType()));
             } catch (IllegalAccessException e) {
@@ -204,7 +199,7 @@ public abstract class Context {
    * @return instance
    */
   public static <T> T getBean(final Class<T> targetClass) {
-    logger.debug("search for object for class:{}", targetClass.getName());
+    log.debug("search for object for class:{}", targetClass.getName());
 
     List<Object> result = new ArrayList<>();
 
@@ -217,12 +212,12 @@ public abstract class Context {
           classes.addAll(getSuperClasses(new ArrayList<>(), entryClass));
           classes.addAll(Arrays.asList(entryClass.getInterfaces()));
 
-          logger.debug("target and super classes, interface classes. => classes:{}", classes);
+          log.debug("target and super classes, interface classes. => classes:{}", classes);
 
           for (Class<?> searchClass : classes) {
             if (targetClass.equals(searchClass)) {
               result.add(v);
-              logger.debug("match container object.");
+              log.debug("match container object.");
               break;
             }
           }
