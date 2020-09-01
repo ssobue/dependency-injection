@@ -67,6 +67,10 @@
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
         <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
         <clover-maven-plugin.version>4.4.1</clover-maven-plugin.version>
+        <!-- SonarCloud -->
+        <sonar.projectKey>ssobue_dependency-injection</sonar.projectKey>
+        <sonar.organization>ssobue</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
     <distributionManagement>

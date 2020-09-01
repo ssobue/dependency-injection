@@ -23,7 +23,7 @@ jobs:
       - run: mvn dependency:go-offline
         
       # run tests!
-      - run: mvn deploy site-deploy
+      - run: mvn deploy site-deploy org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
 
       - store_test_results:
           path: ./target/surefire-reports
