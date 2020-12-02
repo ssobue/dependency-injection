@@ -1,8 +1,8 @@
 package dev.sobue.sample.di.field.service;
 
 import dev.sobue.sample.di.field.repository.FieldInjectionSampleRepository;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 /**
  * Sample Controller Implementation.

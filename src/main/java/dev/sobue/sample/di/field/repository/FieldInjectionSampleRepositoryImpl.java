@@ -1,7 +1,7 @@
 package dev.sobue.sample.di.field.repository;
 
+import jakarta.inject.Named;
 import java.security.MessageDigest;
-import javax.inject.Named;
 import org.apache.commons.codec.binary.Hex;
 
 /**
