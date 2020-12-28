@@ -3,6 +3,7 @@
 CI Status
 ---
 - CircleCI [![CircleCI](https://circleci.com/gh/ssobue/dependency-injection/tree/master.svg?style=svg)](https://circleci.com/gh/ssobue/dependency-injection/tree/master)
+- SonarCloud [![SonarCloud Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ssobue_dependency-injection&metric=alert_status)](https://sonarcloud.io/dashboard?id=ssobue_dependency-injection)
 
 Update Properties
 ---
