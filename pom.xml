@@ -34,7 +34,7 @@
     </developers>
 
     <scm>
-        <url>http://github.com/ssobue/dependency-injection</url>
+        <url>https://github.com/ssobue/dependency-injection</url>
         <connection>scm:git:https://github.com/ssobue/dependency-injection.git</connection>
         <developerConnection>scm:git:ssh://github.com:ssobue/dependency-injection.git
         </developerConnection>
@@ -48,23 +48,23 @@
         <!-- Dependency Version -->
         <jakarta.inject-api.version>2.0.1</jakarta.inject-api.version>
         <commons-codec.version>1.15</commons-codec.version>
-        <logback.version>1.4.3</logback.version>
-        <lombok.version>1.18.24</lombok.version>
+        <logback.version>1.4.5</logback.version>
+        <lombok.version>1.18.26</lombok.version>
         <!-- Test Dependency Version -->
-        <junit.version>5.9.1</junit.version>
-        <mockito.version>4.8.0</mockito.version>
+        <junit.version>5.9.2</junit.version>
+        <mockito.version>5.1.1</mockito.version>
         <!-- Plugin Version -->
         <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
-        <maven-enforcer-plugin.version>3.1.0</maven-enforcer-plugin.version>
-        <maven-checkstyle-plugin.version>3.2.0</maven-checkstyle-plugin.version>
+        <maven-enforcer-plugin.version>3.2.1</maven-enforcer-plugin.version>
+        <maven-checkstyle-plugin.version>3.2.1</maven-checkstyle-plugin.version>
         <maven-resources-plugin.version>3.3.0</maven-resources-plugin.version>
         <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M8</maven-surefire-plugin.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-        <maven-site-plugin.version>4.0.0-M3</maven-site-plugin.version>
+        <maven-site-plugin.version>4.0.0-M4</maven-site-plugin.version>
         <maven-jxr-plugin.version>3.3.0</maven-jxr-plugin.version>
         <maven-project-info-reports-plugin.version>3.4.1</maven-project-info-reports-plugin.version>
-        <maven-pmd-plugin.version>3.19.0</maven-pmd-plugin.version>
+        <maven-pmd-plugin.version>3.20.0</maven-pmd-plugin.version>
         <maven-javadoc-plugin.version>3.4.1</maven-javadoc-plugin.version>
         <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
         <clover-maven-plugin.version>4.4.1</clover-maven-plugin.version>
@@ -213,7 +213,6 @@
                         </goals>
                         <configuration>
                             <configLocation>google_checks.xml</configLocation>
-                            <encoding>${project.build.sourceEncoding}</encoding>
                             <failsOnError>true</failsOnError>
                         </configuration>
                     </execution>
