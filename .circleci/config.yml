@@ -16,4 +16,3 @@ workflows:
       - maven/test:
           name: test
           executor: openjdk17
-          command: 'verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar'
