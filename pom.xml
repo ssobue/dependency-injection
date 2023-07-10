@@ -64,7 +64,7 @@
         <maven-site-plugin.version>3.12.1</maven-site-plugin.version>
         <maven-jxr-plugin.version>3.3.0</maven-jxr-plugin.version>
         <maven-project-info-reports-plugin.version>3.4.5</maven-project-info-reports-plugin.version>
-        <maven-pmd-plugin.version>3.20.0</maven-pmd-plugin.version>
+        <maven-pmd-plugin.version>3.21.0</maven-pmd-plugin.version>
         <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
         <jacoco-maven-plugin.version>0.8.9</jacoco-maven-plugin.version>
         <clover-maven-plugin.version>4.4.1</clover-maven-plugin.version>
