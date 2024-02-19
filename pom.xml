@@ -67,7 +67,7 @@
         <maven-pmd-plugin.version>3.21.2</maven-pmd-plugin.version>
         <maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
         <jacoco-maven-plugin.version>0.8.11</jacoco-maven-plugin.version>
-        <clover-maven-plugin.version>4.5.1</clover-maven-plugin.version>
+        <clover-maven-plugin.version>4.5.2</clover-maven-plugin.version>
         <!-- SonarCloud -->
         <sonar.projectKey>ssobue_dependency-injection</sonar.projectKey>
         <sonar.organization>ssobue</sonar.organization>
