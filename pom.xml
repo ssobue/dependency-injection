@@ -52,7 +52,7 @@
         <lombok.version>1.18.34</lombok.version>
         <!-- Test Dependency Version -->
         <junit.version>5.11.2</junit.version>
-        <mockito.version>5.13.0</mockito.version>
+        <mockito.version>5.14.2</mockito.version>
         <!-- Plugin Version -->
         <maven-clean-plugin.version>3.4.0</maven-clean-plugin.version>
         <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
