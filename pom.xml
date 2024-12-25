@@ -51,7 +51,7 @@
         <logback.version>1.5.15</logback.version>
         <lombok.version>1.18.36</lombok.version>
         <!-- Test Dependency Version -->
-        <junit.version>5.11.3</junit.version>
+        <junit.version>5.11.4</junit.version>
         <mockito.version>5.14.2</mockito.version>
         <!-- Plugin Version -->
         <maven-clean-plugin.version>3.4.0</maven-clean-plugin.version>
