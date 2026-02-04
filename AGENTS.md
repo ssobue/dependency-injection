@@ -34,6 +34,7 @@ mvn -DskipTests package
 ## Conventions
 - Keep new DI-managed components in the `dev.sobue.sample.di.field` package (or subpackages) so the scanner can find them.
 - Avoid introducing multiple implementations of the same interface unless you also update resolution logic in `Context.getBean(...)`.
+- Add Javadoc to constants (including `private static final` fields).
 
 ## GitHub Actions
 - Workflow: `.github/workflows/main.yaml`

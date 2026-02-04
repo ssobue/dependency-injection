@@ -3,7 +3,6 @@ package dev.sobue.sample.di.field.container;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.io.File;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -11,10 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -23,7 +19,24 @@ import lombok.extern.slf4j.Slf4j;
  * @author Sho Sobue
  */
 @Slf4j
-public abstract class Context {
+public class Context {
+
+  /**
+   * Suffix of compiled class files.
+   */
+  private static final String CLASS_SUFFIX = ".class";
+
+  /**
+   * Message for missing no-arg constructor.
+   */
+  private static final String NO_DEFAULT_CONSTRUCTOR_MESSAGE = "no default constructor";
+
+  /**
+   * Prevent instantiation.
+   */
+  private Context() {
+    throw new AssertionError("no instances");
+  }
 
   /**
    * Container Object.
@@ -47,8 +60,8 @@ public abstract class Context {
   }
 
   /**
-   * initialize container: scan {@link Named} annotations and inject object to annotated {@link
-   * Inject}.
+   * initialize container: scan {@link Named} annotations and inject object to annotated
+   * {@link Inject}.
    *
    * @param basePackages scan packages
    * @throws ClassNotFoundException unknown class specified
@@ -88,22 +101,29 @@ public abstract class Context {
       // Load Named Annotated Classes
       for (String className : classes) {
         Class<?> clazz = Class.forName(className);
-        Annotation annotation = clazz.getAnnotation(Named.class);
-        if (annotation != null) {
+        if (clazz.isAnnotationPresent(Named.class)) {
           log.debug("class:{} is Named annotation presented, register to container", className);
-          if (Stream.of(clazz.getDeclaredConstructors())
-              .noneMatch(c -> c.getParameterCount() == 0)) {
-            throw new InstantiationException("no default constructor");
-          }
-          container.put(
-              clazz.getSimpleName(),
-              Stream.of(clazz.getDeclaredConstructors())
-                  .filter(c -> c.getParameterCount() == 0)
-                  .findFirst()
-                  .get()
-                  .newInstance());
+          register(clazz.getSimpleName(), createInstance(clazz));
         }
       }
+    }
+  }
+
+  /**
+   * create instance from class.
+   *
+   * @param clazz target class
+   * @return instance
+   * @throws InstantiationException no default constructor
+   * @throws IllegalAccessException not accessible class
+   * @throws InvocationTargetException constructor throws exception
+   */
+  private static Object createInstance(final Class<?> clazz)
+      throws InstantiationException, IllegalAccessException, InvocationTargetException {
+    try {
+      return clazz.getDeclaredConstructor().newInstance();
+    } catch (NoSuchMethodException e) {
+      throw new InstantiationException(NO_DEFAULT_CONSTRUCTOR_MESSAGE);
     }
   }
 
@@ -117,33 +137,36 @@ public abstract class Context {
     String resourceName = packageName.replace('.', '/');
     ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
     URL root = classLoader.getResource(resourceName);
-    File rootFile = new File(Objects.requireNonNull(root).getFile());
+    if (root == null) {
+      throw new IllegalStateException("resource not found: " + resourceName);
+    }
+    File rootFile = new File(root.getFile());
 
     // Sub Packages
-    File[] dirs = rootFile.listFiles((dir, name) -> !name.endsWith(".class"));
+    File[] dirs = rootFile.listFiles(File::isDirectory);
     // Classes in current package
-    File[] files = rootFile.listFiles((dir, name) -> name.endsWith(".class"));
+    File[] files =
+        rootFile.listFiles(
+            file -> file.isFile() && file.getName().endsWith(CLASS_SUFFIX));
 
     // class list
     List<String> classes = new ArrayList<>();
 
-    if (Objects.nonNull(dirs) && dirs.length > 0) {
+    if (dirs != null && dirs.length > 0) {
       // Collect Class Names in Sub Packages
-      Stream.of(dirs)
-          .map(File::getName)
-          .map(d -> getClassNames(packageName + "." + d))
-          .forEach(classes::addAll);
+      for (File dir : dirs) {
+        classes.addAll(getClassNames(packageName + "." + dir.getName()));
+      }
       log.debug("class list in sub package => basePackage:{} classes:{}", packageName, classes);
     }
 
-    if (Objects.nonNull(files) && files.length > 0) {
+    if (files != null) {
       // Collect Class Names in Current Packages
-      classes.addAll(
-          Stream.of(files)
-              .map(File::getName)
-              .map(name -> name.replaceAll(".class$", ""))
-              .map(name -> packageName + "." + name)
-              .collect(Collectors.toList()));
+      for (File file : files) {
+        String name = file.getName();
+        String className = name.substring(0, name.length() - CLASS_SUFFIX.length());
+        classes.add(packageName + "." + className);
+      }
     }
 
     return classes;
@@ -153,42 +176,48 @@ public abstract class Context {
    * inject object to annotated {@link Inject} fields in class.
    */
   private static void injection() {
-    container.forEach(
-        (k, v) -> {
-          Class<?> clazz = v.getClass();
-          log.debug("start injection => class:{}", clazz.getName());
+    container.values().forEach(Context::injectFields);
+  }
 
-          for (Field field : clazz.getDeclaredFields()) {
-            if (!field.isAnnotationPresent(Inject.class)) {
-              log.debug(
-                  "Inject annotation is not presented. class:{} field:{}",
-                  clazz.getName(),
-                  field.getName());
-              continue;
-            }
+  /**
+   * inject object to annotated {@link Inject} fields in class.
+   *
+   * @param instance target instance
+   */
+  private static void injectFields(final Object instance) {
+    Class<?> clazz = instance.getClass();
+    log.debug("start injection => class:{}", clazz.getName());
 
-            boolean modifyAccessible = false;
-            if (!field.trySetAccessible()) {
-              modifyAccessible = true;
-              field.setAccessible(true);
-            }
+    for (Field field : clazz.getDeclaredFields()) {
+      if (!field.isAnnotationPresent(Inject.class)) {
+        log.debug(
+            "Inject annotation is not presented. class:{} field:{}",
+            clazz.getName(),
+            field.getName());
+        continue;
+      }
 
-            log.debug(
-                "Inject annotation is presented. class:{} field:{}",
-                clazz.getName(),
-                field.getName());
-            log.debug("start search object from container by class type");
-            try {
-              field.set(v, getBean(field.getType()));
-            } catch (IllegalAccessException e) {
-              throw new RuntimeException(e);
-            }
+      boolean modifyAccessible = false;
+      try {
+        if (!field.trySetAccessible()) {
+          modifyAccessible = true;
+          field.setAccessible(true);
+        }
 
-            if (modifyAccessible) {
-              field.setAccessible(false);
-            }
-          }
-        });
+        log.debug(
+            "Inject annotation is presented. class:{} field:{}",
+            clazz.getName(),
+            field.getName());
+        log.debug("start search object from container by class type");
+        field.set(instance, getBean(field.getType()));
+      } catch (IllegalAccessException e) {
+        throw new RuntimeException(e);
+      } finally {
+        if (modifyAccessible) {
+          field.setAccessible(false);
+        }
+      }
+    }
   }
 
   /**
@@ -201,54 +230,25 @@ public abstract class Context {
   public static <T> T getBean(final Class<T> targetClass) {
     log.debug("search for object for class:{}", targetClass.getName());
 
-    List<Object> result = new ArrayList<>();
+    Object match = null;
 
-    container.forEach(
-        (k, v) -> {
-          Class<?> entryClass = v.getClass();
+    for (Object value : container.values()) {
+      Class<?> entryClass = value.getClass();
+      if (!targetClass.isAssignableFrom(entryClass)) {
+        continue;
+      }
 
-          List<Class<?>> classes = new ArrayList<>();
-          classes.add(entryClass);
-          classes.addAll(getSuperClasses(new ArrayList<>(), entryClass));
-          classes.addAll(Arrays.asList(entryClass.getInterfaces()));
+      log.debug("match container object.");
+      if (match != null) {
+        throw new IllegalStateException("not single object");
+      }
+      match = value;
+    }
 
-          log.debug("target and super classes, interface classes. => classes:{}", classes);
-
-          for (Class<?> searchClass : classes) {
-            if (targetClass.equals(searchClass)) {
-              result.add(v);
-              log.debug("match container object.");
-              break;
-            }
-          }
-        });
-
-    if (result.isEmpty()) {
+    if (match == null) {
       throw new IllegalStateException("no object");
     }
 
-    if (result.size() > 1) {
-      throw new IllegalStateException("not single object");
-    }
-
-    return targetClass.cast(result.get(0));
-  }
-
-  /**
-   * get list of super class.
-   *
-   * @param superClasses list of super class
-   * @param clazz target class
-   * @return list of super class
-   */
-  private static List<Class<?>> getSuperClasses(
-      final List<Class<?>> superClasses, final Class<?> clazz) {
-    // continue until target class is Object
-    if (!Object.class.equals(clazz)) {
-      Class<?> superClass = clazz.getSuperclass();
-      superClasses.add(superClass);
-      getSuperClasses(superClasses, superClass);
-    }
-    return superClasses;
+    return targetClass.cast(match);
   }
 }
