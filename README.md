@@ -36,13 +36,19 @@ mvn -version
 mvn -DskipTests package
 ```
 
-2. Run the sample
+2. Run the field-injection sample
 
 ```bash
-mvn -q -DskipTests exec:java -Dexec.mainClass=dev.sobue.sample.di.field.DependencyInjectionSampleApplication
+mvn -q -DskipTests exec:java -Dexec.mainClass=dev.sobue.sample.di.field.FieldInjectionApplication
 ```
 
 If you see logs starting with `start app` and a `result = ...` line, the run succeeded.
+
+3. Run the constructor-injection sample
+
+```bash
+mvn -q -DskipTests exec:java -Dexec.mainClass=dev.sobue.sample.di.constructor.ConstructorInjectionApplication
+```
 
 ## Run Tests
 
@@ -52,12 +58,18 @@ mvn test
 
 ## Key Files
 
-- `src/main/java/dev/sobue/sample/di/field/DependencyInjectionSampleApplication.java`  
+- `src/main/java/dev/sobue/sample/di/field/FieldInjectionApplication.java`  
   Entry point. Initializes the DI container and invokes the controller.
 - `src/main/java/dev/sobue/sample/di/field/container/Context.java`  
   The DI container implementation: scanning, instantiation, and injection.
 - `src/main/java/dev/sobue/sample/di/field/controller` / `service` / `repository`  
   Sample layer implementations.
+- `src/main/java/dev/sobue/sample/di/constructor/ConstructorInjectionApplication.java`  
+  Entry point for constructor injection.
+- `src/main/java/dev/sobue/sample/di/constructor/container/Context.java`  
+  Constructor-injection container implementation.
+- `src/main/java/dev/sobue/sample/di/constructor/controller` / `service` / `repository`  
+  Constructor-injection sample layers.
 - `src/test/java/dev/sobue/sample/di/field`  
   Unit tests.
 

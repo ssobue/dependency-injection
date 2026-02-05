@@ -1,6 +1,6 @@
-package dev.sobue.sample.di.field.service;
+package dev.sobue.sample.di.constructor.service;
 
-import dev.sobue.sample.di.field.repository.FieldInjectionSampleRepository;
+import dev.sobue.sample.di.constructor.repository.ConstructorInjectionSampleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -16,18 +16,18 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@DisplayName("FieldInjectionSampleServiceImpl")
+@DisplayName("ConstructorInjectionSampleServiceImpl")
 @ExtendWith(MockitoExtension.class)
-public class FieldInjectionSampleServiceImplUnitTest {
+public class ConstructorInjectionSampleServiceImplUnitTest {
 
-  private FieldInjectionSampleService service;
+  private ConstructorInjectionSampleService service;
 
-  private FieldInjectionSampleRepository repository;
+  private ConstructorInjectionSampleRepository repository;
 
   @BeforeEach
   void setup() {
-    repository = mock(FieldInjectionSampleRepository.class);
-    service = new FieldInjectionSampleServiceImpl(repository);
+    repository = mock(ConstructorInjectionSampleRepository.class);
+    service = new ConstructorInjectionSampleServiceImpl(repository);
   }
 
   @Nested

@@ -1,17 +1,17 @@
-package dev.sobue.sample.di.field;
+package dev.sobue.sample.di.constructor;
 
-import dev.sobue.sample.di.field.container.Context;
-import dev.sobue.sample.di.field.controller.FieldInjectionSampleController;
+import dev.sobue.sample.di.constructor.container.Context;
+import dev.sobue.sample.di.constructor.controller.ConstructorInjectionSampleController;
 import java.lang.reflect.InvocationTargetException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Dependency Injection Sample Application.
+ * Dependency Injection Constructor Sample Application.
  *
  * @author Sho Sobue
  */
 @Slf4j
-public class DependencyInjectionSampleApplication {
+public class ConstructorInjectionApplication {
 
   /**
    * Main Method.
@@ -25,18 +25,18 @@ public class DependencyInjectionSampleApplication {
       log.info("start app");
 
       log.info("automated object definition, search for Named annotation");
-      Context.initialize(DependencyInjectionSampleApplication.class.getPackage().getName());
+      Context.initialize(ConstructorInjectionApplication.class.getPackage().getName());
 
-      log.info("-------- start field injection test run --------");
+      log.info("-------- start constructor injection test run --------");
 
       log.info("get object from container");
-      FieldInjectionSampleController controller =
-          Context.getBean(FieldInjectionSampleController.class);
+      ConstructorInjectionSampleController controller =
+          Context.getBean(ConstructorInjectionSampleController.class);
 
       log.info("execute controller");
       log.info("result = {}", controller.get("input"));
 
-      log.info("-------- end field injection test run --------");
+      log.info("-------- end constructor injection test run --------");
 
       log.info("end app");
 

@@ -1,4 +1,4 @@
-package dev.sobue.sample.di.field.repository;
+package dev.sobue.sample.di.constructor.repository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,14 +11,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@DisplayName("FieldInjectionSampleRepositoryImpl")
-public class FieldInjectionSampleRepositoryImplUnitTest {
+@DisplayName("ConstructorInjectionSampleRepositoryImpl")
+public class ConstructorInjectionSampleRepositoryImplUnitTest {
 
-  private FieldInjectionSampleRepository repository;
+  private ConstructorInjectionSampleRepository repository;
 
   @BeforeEach
   void setup() {
-    repository = new FieldInjectionSampleRepositoryImpl();
+    repository = new ConstructorInjectionSampleRepositoryImpl();
   }
 
   @Nested

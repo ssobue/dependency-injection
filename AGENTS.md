@@ -4,9 +4,17 @@
 This is a Java/Maven sample project that demonstrates a simple dependency-injection container using `jakarta.inject` annotations. The main flow scans for `@Named` classes, instantiates them, and injects `@Inject` fields by type.
 
 ## Key Paths
-- `src/main/java/dev/sobue/sample/di/field/DependencyInjectionSampleApplication.java` (main entry point)
-- `src/main/java/dev/sobue/sample/di/field/container/Context.java` (DI container implementation)
+
+- `src/main/java/dev/sobue/sample/di/field/FieldInjectionApplication.java` (field injection entry
+  point)
+- `src/main/java/dev/sobue/sample/di/field/container/Context.java` (field injection DI container)
 - `src/main/java/dev/sobue/sample/di/field/controller` / `service` / `repository` (sample layers)
+- `src/main/java/dev/sobue/sample/di/constructor/ConstructorInjectionApplication.java` (constructor
+  injection entry point)
+- `src/main/java/dev/sobue/sample/di/constructor/container/Context.java` (constructor injection DI
+  container)
+- `src/main/java/dev/sobue/sample/di/constructor/controller` / `service` / `repository` (sample
+  layers)
 - `src/test/java/dev/sobue/sample/di/field` (unit tests)
 - `src/main/resources/logback.xml` (logging)
 - `pom.xml` (Maven build, Java 25, plugins and dependency versions)
@@ -33,6 +41,8 @@ mvn -DskipTests package
 
 ## Conventions
 - Keep new DI-managed components in the `dev.sobue.sample.di.field` package (or subpackages) so the scanner can find them.
+- Keep constructor-injection sample components in the `dev.sobue.sample.di.constructor` package (or
+  subpackages) so its scanner can find them.
 - Avoid introducing multiple implementations of the same interface unless you also update resolution logic in `Context.getBean(...)`.
 - Add Javadoc to constants (including `private static final` fields).
 

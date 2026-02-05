@@ -1,6 +1,6 @@
-package dev.sobue.sample.di.field.service;
+package dev.sobue.sample.di.constructor.controller;
 
-import dev.sobue.sample.di.field.repository.FieldInjectionSampleRepository;
+import dev.sobue.sample.di.constructor.service.ConstructorInjectionSampleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -16,18 +16,18 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@DisplayName("FieldInjectionSampleServiceImpl")
+@DisplayName("ConstructorInjectionSampleControllerImpl")
 @ExtendWith(MockitoExtension.class)
-public class FieldInjectionSampleServiceImplUnitTest {
+public class ConstructorInjectionSampleControllerImplUnitTest {
 
-  private FieldInjectionSampleService service;
+  private ConstructorInjectionSampleController controller;
 
-  private FieldInjectionSampleRepository repository;
+  private ConstructorInjectionSampleService constructorInjectionSampleService;
 
   @BeforeEach
   void setup() {
-    repository = mock(FieldInjectionSampleRepository.class);
-    service = new FieldInjectionSampleServiceImpl(repository);
+    constructorInjectionSampleService = mock(ConstructorInjectionSampleService.class);
+    controller = new ConstructorInjectionSampleControllerImpl(constructorInjectionSampleService);
   }
 
   @Nested
@@ -35,18 +35,18 @@ public class FieldInjectionSampleServiceImplUnitTest {
   class Get {
 
     @ParameterizedTest
-    @DisplayName("returns repository result for null, empty, and non-empty input")
+    @DisplayName("returns service result for null, empty, and non-empty input")
     @NullAndEmptySource
     @ValueSource(strings = {"abc"})
-    void returnsRepositoryResult(String input) {
+    void returnsServiceResult(String input) {
       // setup
-      when(repository.get(eq(input))).thenReturn(input);
+      when(constructorInjectionSampleService.get(eq(input))).thenReturn(input);
 
       // when
-      String result = service.get(input);
+      String result = controller.get(input);
 
       // then
-      verify(repository).get(eq(input));
+      verify(constructorInjectionSampleService).get(eq(input));
       assertEquals(input, result);
     }
   }

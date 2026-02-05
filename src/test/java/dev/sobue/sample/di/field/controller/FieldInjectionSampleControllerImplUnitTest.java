@@ -2,6 +2,8 @@ package dev.sobue.sample.di.field.controller;
 
 import dev.sobue.sample.di.field.service.FieldInjectionSampleService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
@@ -14,6 +16,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@DisplayName("FieldInjectionSampleControllerImpl")
 @ExtendWith(MockitoExtension.class)
 public class FieldInjectionSampleControllerImplUnitTest {
 
@@ -27,18 +30,24 @@ public class FieldInjectionSampleControllerImplUnitTest {
     controller = new FieldInjectionSampleControllerImpl(fieldInjectionSampleService);
   }
 
-  @ParameterizedTest
-  @NullAndEmptySource
-  @ValueSource(strings = {"abc"})
-  void inputTest(String input) {
-    // setup
-    when(fieldInjectionSampleService.get(eq(input))).thenReturn(input);
+  @Nested
+  @DisplayName("get")
+  class Get {
 
-    // when
-    String result = controller.get(input);
+    @ParameterizedTest
+    @DisplayName("returns service result for null, empty, and non-empty input")
+    @NullAndEmptySource
+    @ValueSource(strings = {"abc"})
+    void returnsServiceResult(String input) {
+      // setup
+      when(fieldInjectionSampleService.get(eq(input))).thenReturn(input);
 
-    // then
-    verify(fieldInjectionSampleService).get(eq(input));
-    assertEquals(input, result);
+      // when
+      String result = controller.get(input);
+
+      // then
+      verify(fieldInjectionSampleService).get(eq(input));
+      assertEquals(input, result);
+    }
   }
 }
