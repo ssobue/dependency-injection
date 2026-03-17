@@ -39,13 +39,11 @@ class ContextUnitTest {
 
     @Test
     @DisplayName("throws when multiple implementations exist")
-    void throwsWhenMultipleImplementationsExist() throws Exception {
-      Context.initialize("dev.sobue.sample.di.constructor.container.fixture.multiple");
-
+    void throwsWhenMultipleImplementationsExist() {
       IllegalStateException exception =
           assertThrows(
               IllegalStateException.class,
-              () -> Context.getBean(ConstructorMultipleRepository.class));
+              () -> Context.initialize("dev.sobue.sample.di.constructor.container.fixture.multiple"));
 
       assertEquals("not single object", exception.getMessage());
     }

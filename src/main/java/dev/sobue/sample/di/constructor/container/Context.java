@@ -261,11 +261,6 @@ public final class Context {
    */
   private static Object resolveDependency(final Class<?> targetClass)
       throws InstantiationException, IllegalAccessException, InvocationTargetException {
-    Object existing = findFromContainer(targetClass);
-    if (existing != null) {
-      return existing;
-    }
-
     Class<?> implementation = findImplementationClass(targetClass);
     return getOrCreate(implementation);
   }
