@@ -187,18 +187,11 @@ public final class Context {
     Constructor<?> constructor = selectConstructor(clazz);
     Object[] args = resolveConstructorArgs(constructor.getParameterTypes());
 
-    boolean modifyAccessible = false;
-    try {
-      if (!constructor.trySetAccessible()) {
-        modifyAccessible = true;
-        constructor.setAccessible(true);
-      }
-      return constructor.newInstance(args);
-    } finally {
-      if (modifyAccessible) {
-        constructor.setAccessible(false);
-      }
+    if (!constructor.canAccess(null) && !constructor.trySetAccessible()) {
+      throw new IllegalStateException("constructor is not accessible: " + clazz.getName());
     }
+
+    return constructor.newInstance(args);
   }
 
   /**

@@ -191,6 +191,7 @@ public class Context {
    *
    * @param instance target instance
    */
+  @SuppressWarnings("java:S3011")
   private static void injectFields(final Object instance) {
     Class<?> clazz = instance.getClass();
     log.debug("start injection => class:{}", clazz.getName());
@@ -204,11 +205,10 @@ public class Context {
         continue;
       }
 
-      boolean modifyAccessible = false;
       try {
-        if (!field.trySetAccessible()) {
-          modifyAccessible = true;
-          field.setAccessible(true);
+        if (!field.canAccess(instance) && !field.trySetAccessible()) {
+          throw new IllegalStateException(
+              "field is not accessible: " + clazz.getName() + "#" + field.getName());
         }
 
         log.debug(
@@ -221,10 +221,6 @@ public class Context {
         throw new IllegalStateException(
             "failed to inject field: " + clazz.getName() + "#" + field.getName(),
             e);
-      } finally {
-        if (modifyAccessible) {
-          field.setAccessible(false);
-        }
       }
     }
   }
