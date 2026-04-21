@@ -2,6 +2,7 @@ package dev.sobue.sample.di.field.repository;
 
 import jakarta.inject.Named;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import org.apache.commons.codec.binary.Hex;
 
 /**
@@ -29,8 +30,8 @@ public class FieldInjectionSampleRepositoryImpl implements FieldInjectionSampleR
     MessageDigest digest;
     try {
       digest = MessageDigest.getInstance(HASH_ALGORITHM);
-    } catch (Exception e) {
-      return "";
+    } catch (NoSuchAlgorithmException e) {
+      throw new IllegalStateException("missing hash algorithm: " + HASH_ALGORITHM, e);
     }
 
     byte[] result = digest.digest(input.getBytes());

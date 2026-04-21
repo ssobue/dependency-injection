@@ -28,3 +28,7 @@ nbdist/
 
 ### macOS ###
 .DS_Store
+
+### Local Tooling ###
+.ai/
+.sonar/

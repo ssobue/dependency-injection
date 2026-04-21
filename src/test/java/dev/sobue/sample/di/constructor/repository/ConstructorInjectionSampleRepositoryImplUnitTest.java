@@ -8,11 +8,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("ConstructorInjectionSampleRepositoryImpl")
-public class ConstructorInjectionSampleRepositoryImplUnitTest {
+class ConstructorInjectionSampleRepositoryImplUnitTest {
 
   private ConstructorInjectionSampleRepository repository;
 
@@ -28,12 +27,7 @@ public class ConstructorInjectionSampleRepositoryImplUnitTest {
     @Test
     @DisplayName("throws NullPointerException when input is null")
     void throwsWhenInputIsNull() {
-      try {
-        repository.get(null);
-        fail();
-      } catch (NullPointerException e) {
-        assertTrue(true);
-      }
+      assertThrows(NullPointerException.class, () -> repository.get(null));
     }
 
     @ParameterizedTest

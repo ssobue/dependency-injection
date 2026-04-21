@@ -13,8 +13,10 @@ import jakarta.inject.Named;
 public class FieldInjectionSampleServiceImpl implements FieldInjectionSampleService {
 
   /**
-   * Sample Repository.
+   * Sample Repository. Field injection is intentional because this package demonstrates field-based
+   * DI.
    */
+  @SuppressWarnings("java:S6813")
   @Inject
   private FieldInjectionSampleRepository repository;
 

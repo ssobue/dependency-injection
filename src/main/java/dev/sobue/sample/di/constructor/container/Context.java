@@ -228,7 +228,9 @@ public final class Context {
     try {
       return clazz.getDeclaredConstructor();
     } catch (NoSuchMethodException e) {
-      throw new InstantiationException("no default constructor");
+      InstantiationException exception = new InstantiationException("no default constructor");
+      exception.initCause(e);
+      throw exception;
     }
   }
 

@@ -23,6 +23,7 @@ public class ConstructorInjectionApplication {
       InvocationTargetException {
     try {
       log.info("start app");
+      log.debug("args count = {}", args == null ? 0 : args.length);
 
       log.info("automated object definition, search for Named annotation");
       Context.initialize(ConstructorInjectionApplication.class.getPackage().getName());
@@ -41,9 +42,7 @@ public class ConstructorInjectionApplication {
       log.info("end app");
 
     } catch (Throwable t) {
-      // IllegalStatus
-      System.err.println(t.getMessage());
-      t.printStackTrace();
+      log.error("constructor injection application failed", t);
       throw t;
     }
   }

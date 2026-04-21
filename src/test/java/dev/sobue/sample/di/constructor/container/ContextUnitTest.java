@@ -1,6 +1,5 @@
 package dev.sobue.sample.di.constructor.container;
 
-import dev.sobue.sample.di.constructor.container.fixture.multiple.ConstructorMultipleRepository;
 import dev.sobue.sample.di.constructor.container.fixture.success.ConstructorSuccessControllerImpl;
 import java.lang.reflect.Field;
 import java.util.List;

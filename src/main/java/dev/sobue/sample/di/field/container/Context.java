@@ -22,6 +22,11 @@ import lombok.extern.slf4j.Slf4j;
 public class Context {
 
   /**
+   * Trace log format for container state.
+   */
+  private static final String CONTAINER_LOG_FORMAT = "container:{}";
+
+  /**
    * Suffix of compiled class files.
    */
   private static final String CLASS_SUFFIX = ".class";
@@ -45,7 +50,7 @@ public class Context {
 
   // for trace log
   static {
-    log.trace("container:{}", container);
+    log.trace(CONTAINER_LOG_FORMAT, container);
   }
 
   /**
@@ -56,7 +61,7 @@ public class Context {
    */
   public static void register(final String id, final Object object) {
     container.put(id, object);
-    log.trace("container:{}", container);
+    log.trace(CONTAINER_LOG_FORMAT, container);
   }
 
   /**
@@ -75,7 +80,7 @@ public class Context {
     createInstances(basePackages);
     log.info("start injection to instance parameters");
     injection();
-    log.trace("container:{}", container);
+    log.trace(CONTAINER_LOG_FORMAT, container);
   }
 
   /**
@@ -123,7 +128,9 @@ public class Context {
     try {
       return clazz.getDeclaredConstructor().newInstance();
     } catch (NoSuchMethodException e) {
-      throw new InstantiationException(NO_DEFAULT_CONSTRUCTOR_MESSAGE);
+      InstantiationException exception = new InstantiationException(NO_DEFAULT_CONSTRUCTOR_MESSAGE);
+      exception.initCause(e);
+      throw exception;
     }
   }
 
@@ -211,7 +218,9 @@ public class Context {
         log.debug("start search object from container by class type");
         field.set(instance, getBean(field.getType()));
       } catch (IllegalAccessException e) {
-        throw new RuntimeException(e);
+        throw new IllegalStateException(
+            "failed to inject field: " + clazz.getName() + "#" + field.getName(),
+            e);
       } finally {
         if (modifyAccessible) {
           field.setAccessible(false);

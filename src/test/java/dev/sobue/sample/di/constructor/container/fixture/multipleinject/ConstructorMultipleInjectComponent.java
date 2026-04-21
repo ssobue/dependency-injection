@@ -8,6 +8,7 @@ public class ConstructorMultipleInjectComponent {
 
   @Inject
   public ConstructorMultipleInjectComponent() {
+    // Intentionally empty to verify detection of multiple @Inject constructors in tests.
   }
 
   @Inject
