@@ -1,9 +1,7 @@
 package dev.sobue.sample.di.field.repository;
 
+import dev.sobue.sample.di.common.Sha256HexEncoder;
 import jakarta.inject.Named;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import org.apache.commons.codec.binary.Hex;
 
 /**
  * Sample Repository Implementation.
@@ -14,11 +12,6 @@ import org.apache.commons.codec.binary.Hex;
 public class FieldInjectionSampleRepositoryImpl implements FieldInjectionSampleRepository {
 
   /**
-   * Hash Algorithm.
-   */
-  private static final String HASH_ALGORITHM = "SHA-256";
-
-  /**
    * get by hash (SHA-256).
    *
    * @param input input value
@@ -27,14 +20,6 @@ public class FieldInjectionSampleRepositoryImpl implements FieldInjectionSampleR
    */
   @Override
   public String get(final String input) {
-    MessageDigest digest;
-    try {
-      digest = MessageDigest.getInstance(HASH_ALGORITHM);
-    } catch (NoSuchAlgorithmException e) {
-      throw new IllegalStateException("missing hash algorithm: " + HASH_ALGORITHM, e);
-    }
-
-    byte[] result = digest.digest(input.getBytes());
-    return Hex.encodeHexString(result);
+    return Sha256HexEncoder.encode(input);
   }
 }

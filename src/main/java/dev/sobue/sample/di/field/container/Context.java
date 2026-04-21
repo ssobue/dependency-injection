@@ -1,12 +1,10 @@
 package dev.sobue.sample.di.field.container;
 
+import dev.sobue.sample.di.common.ClassPathClassNameCollector;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -25,11 +23,6 @@ public class Context {
    * Trace log format for container state.
    */
   private static final String CONTAINER_LOG_FORMAT = "container:{}";
-
-  /**
-   * Suffix of compiled class files.
-   */
-  private static final String CLASS_SUFFIX = ".class";
 
   /**
    * Message for missing no-arg constructor.
@@ -100,7 +93,7 @@ public class Context {
       log.debug("scan => basePackage:{}", packageName);
 
       // Get Class Name List
-      List<String> classes = getClassNames(packageName);
+      List<String> classes = ClassPathClassNameCollector.collect(packageName);
       log.debug("class list => basePackage:{} classes:{}", packageName, classes);
 
       // Load Named Annotated Classes
@@ -132,51 +125,6 @@ public class Context {
       exception.initCause(e);
       throw exception;
     }
-  }
-
-  /**
-   * get class name list by package name.
-   *
-   * @param packageName package name
-   * @return list of class name
-   */
-  private static List<String> getClassNames(final String packageName) {
-    String resourceName = packageName.replace('.', '/');
-    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-    URL root = classLoader.getResource(resourceName);
-    if (root == null) {
-      throw new IllegalStateException("resource not found: " + resourceName);
-    }
-    File rootFile = new File(root.getFile());
-
-    // Sub Packages
-    File[] dirs = rootFile.listFiles(File::isDirectory);
-    // Classes in current package
-    File[] files =
-        rootFile.listFiles(
-            file -> file.isFile() && file.getName().endsWith(CLASS_SUFFIX));
-
-    // class list
-    List<String> classes = new ArrayList<>();
-
-    if (dirs != null && dirs.length > 0) {
-      // Collect Class Names in Sub Packages
-      for (File dir : dirs) {
-        classes.addAll(getClassNames(packageName + "." + dir.getName()));
-      }
-      log.debug("class list in sub package => basePackage:{} classes:{}", packageName, classes);
-    }
-
-    if (files != null) {
-      // Collect Class Names in Current Packages
-      for (File file : files) {
-        String name = file.getName();
-        String className = name.substring(0, name.length() - CLASS_SUFFIX.length());
-        classes.add(packageName + "." + className);
-      }
-    }
-
-    return classes;
   }
 
   /**

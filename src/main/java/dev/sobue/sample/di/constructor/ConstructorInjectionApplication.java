@@ -14,6 +14,15 @@ import lombok.extern.slf4j.Slf4j;
 public class ConstructorInjectionApplication {
 
   /**
+   * Base packages that contain DI-managed sample components.
+   */
+  private static final String[] BASE_PACKAGES = {
+      ConstructorInjectionSampleController.class.getPackage().getName(),
+      "dev.sobue.sample.di.constructor.service",
+      "dev.sobue.sample.di.constructor.repository"
+  };
+
+  /**
    * Main Method.
    *
    * @param args command line argument
@@ -26,7 +35,7 @@ public class ConstructorInjectionApplication {
       log.debug("args count = {}", args == null ? 0 : args.length);
 
       log.info("automated object definition, search for Named annotation");
-      Context.initialize(ConstructorInjectionApplication.class.getPackage().getName());
+      Context.initialize(BASE_PACKAGES);
 
       log.info("-------- start constructor injection test run --------");
 
