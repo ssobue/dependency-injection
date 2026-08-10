@@ -18,7 +18,7 @@ This is a Java/Maven sample project that demonstrates a simple dependency-inject
 - `src/test/java/dev/sobue/sample/di/field` (unit tests)
 - `src/main/resources/logback.xml` (logging)
 - `pom.xml` (Maven build, Java 25, plugins and dependency versions)
-- `.github/workflows/main.yaml` (GitHub Actions CI workflow)
+- `.github/workflows/maven.yaml` (GitHub Actions CI workflow)
 - `.github/dependabot.yml` (Dependabot configuration)
 
 ## Build and Test
@@ -47,7 +47,8 @@ mvn -DskipTests package
 - Add Javadoc to constants (including `private static final` fields).
 
 ## GitHub Actions
-- Workflow: `.github/workflows/main.yaml`
+
+- Workflow: `.github/workflows/maven.yaml`
 - Trigger: `push`
 - Job: Maven `verify` on JDK 25 (Temurin), with Maven cache enabled
 

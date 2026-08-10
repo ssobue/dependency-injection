@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -12,7 +12,6 @@
     <inceptionYear>2017</inceptionYear>
 
     <name>Sample Code of Dependency Injection</name>
-
     <url>https://github.com/ssobue/dependency-injection</url>
 
     <issueManagement>
@@ -21,14 +20,14 @@
     </issueManagement>
 
     <ciManagement>
-        <system>CircleCI v2</system>
-        <url>https://circleci.com/gh/ssobue/dependency-injection</url>
+        <system>GitHub Actions</system>
+        <url>https://github.com/ssobue/dependency-injection/actions</url>
     </ciManagement>
 
     <developers>
         <developer>
             <id>ssobue</id>
-            <name>Sho SOBUE</name>
+            <name>SOBUE Sho</name>
             <organizationUrl>https://github.com/ssobue</organizationUrl>
         </developer>
     </developers>
@@ -69,26 +68,7 @@
         <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
         <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
         <clover-maven-plugin.version>5.1.0.1</clover-maven-plugin.version>
-        <!-- SonarCloud -->
-        <sonar.projectKey>ssobue_dependency-injection</sonar.projectKey>
-        <sonar.organization>ssobue</sonar.organization>
-        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
-
-    <distributionManagement>
-        <repository>
-            <id>circle-ci</id>
-            <url>file:///tmp/artifacts</url>
-        </repository>
-        <snapshotRepository>
-            <id>circle-ci-snapshot</id>
-            <url>file:///tmp/artifacts</url>
-        </snapshotRepository>
-        <site>
-            <id>circle-ci-site</id>
-            <url>file:///tmp/artifacts</url>
-        </site>
-    </distributionManagement>
 
     <dependencyManagement>
         <dependencies>
