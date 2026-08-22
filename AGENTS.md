@@ -22,7 +22,8 @@ This is a Java/Maven sample project that demonstrates a simple dependency-inject
 - `.github/dependabot.yml` (Dependabot configuration)
 
 ## Build and Test
-Use Maven. Java 25 is required per `pom.xml`.
+Use Maven. Java 25 is the minimum JDK version required by `pom.xml`.
+The GitHub Actions matrix verifies the build on JDK 25 and JDK 26.
 
 ```bash
 mvn test
@@ -49,8 +50,10 @@ mvn -DskipTests package
 ## GitHub Actions
 
 - Workflow: `.github/workflows/maven.yaml`
-- Trigger: `push`
-- Job: Maven `verify` on JDK 25 (Temurin), with Maven cache enabled
+- Triggers: `push` and `pull_request` to `master`
+- Job: Maven `verify` on JDK 25 and JDK 26 (Temurin), with Maven cache enabled
+- The JDK 25 build uploads `target/` for the SonarQube scan job.
+- `sonarqube-scan` runs the Maven SonarScanner only when `SONAR_TOKEN` is configured and the event is not a Dependabot pull request.
 
 ## Dependabot
 - Config: `.github/dependabot.yml`

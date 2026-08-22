@@ -96,9 +96,11 @@ mvn test
 ## CI Status
 
 - SonarCloud [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ssobue_dependency-injection&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ssobue_dependency-injection)
+- GitHub Actions verifies Maven on JDK 25 and JDK 26.
+- SonarCloud analysis runs on JDK 25 when the `SONAR_TOKEN` secret is configured.
 
 ## Update Properties
 
 ```bash
-mvn versions:update-properties -DgenerateBackupPoms=false -Dproperties=jakarta.inject-api.version,commons-codec.version,logback.version,lombok.version,junit.version,mockit.version,maven-clean-plugin.version,maven-enforcer-plugin.version,maven-checkstyle-plugin.version,maven-resources-plugin.version,maven-compiler-plugin.version,maven-surefire-plugin.version,maven-source-plugin.version,maven-site-plugin.version,maven-jxr-plugin.version,maven-project-info-reports-plugin.version,maven-pmd-plugin.version,maven-javadoc-plugin.version,jacoco-maven-plugin.version,clover-maven-plugin.version
+mvn versions:update-properties -DgenerateBackupPoms=false -Dproperties=jakarta.inject-api.version,commons-codec.version,logback.version,lombok.version,junit.version,mockito.version,maven-clean-plugin.version,maven-enforcer-plugin.version,maven-checkstyle-plugin.version,maven-resources-plugin.version,maven-compiler-plugin.version,maven-surefire-plugin.version,maven-source-plugin.version,maven-site-plugin.version,maven-jxr-plugin.version,maven-project-info-reports-plugin.version,maven-pmd-plugin.version,maven-javadoc-plugin.version,jacoco-maven-plugin.version,clover-maven-plugin.version,spotbugs-maven-plugin.version,sonar-maven-plugin.version,checkstyle.version,pmd.version
 ```

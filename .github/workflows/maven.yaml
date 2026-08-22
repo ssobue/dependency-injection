@@ -6,8 +6,13 @@ on:
   pull_request:
     branches: [ "master" ]
 
+concurrency:
+  group: maven-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
+  pull-requests: read
 
 jobs:
   build:
@@ -18,18 +23,45 @@ jobs:
       matrix:
         java-version: [ '25', '26' ]
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Set up JDK ${{ matrix.java-version }}
-        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
-        with:
-          java-version: ${{ matrix.java-version }}
-          distribution: 'temurin'
-          cache: maven
-      - name: Build with Maven
-        run: mvn --batch-mode verify
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        fetch-depth: 0
+    - name: Set up JDK ${{ matrix.java-version }}
+      uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
+      with:
+        java-version: ${{ matrix.java-version }}
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn --batch-mode verify
+    - name: Upload Maven target for SonarQube Cloud
+      if: ${{ matrix['java-version'] == '25' }}
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      with:
+        name: maven-java25-target
+        path: target/
+        if-no-files-found: error
 
-  scan:
+  check-sonarqube-token:
+    name: Check SonarQube Token
+    runs-on: ubuntu-latest
+    outputs:
+      configured: ${{ steps.check.outputs.configured }}
+    steps:
+      - id: check
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          if [[ -n "$SONAR_TOKEN" ]]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  sonarqube-scan:
     name: SonarQube Scan (JDK 25)
+    needs: [ build, check-sonarqube-token ]
+    if: ${{ needs.check-sonarqube-token.outputs.configured == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.user.login != 'dependabot[bot]') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -41,15 +73,16 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
           cache: maven
-      - name: Build with Maven
-        run: mvn --batch-mode verify
-      - name: Cache SonarQube packages
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+      - name: Download Maven target
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-      - name: Scan with SonarQube CLI
-        uses: SonarSource/sonarqube-scan-action@22918119ff8e1ca75a623e15c8296b6ea4fbe28f # v8.2.1
+          name: maven-java25-target
+          path: target
+      - name: Verify SonarQube inputs
+        run: |
+          test -d target/classes
+          test -s target/site/jacoco/jacoco.xml
+      - name: Scan with SonarScanner for Maven
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn --batch-mode -Psonarcloud org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
