@@ -535,7 +535,7 @@
                     ${project.build.directory}/pmd.xml
                 </sonar.java.pmd.reportPaths>
                 <sonar.junit.reportPaths>
-                    ${project.build.directory}/surefire-reports/*.xml
+                    ${project.build.directory}/surefire-reports
                 </sonar.junit.reportPaths>
                 <sonar.java.checkstyle.reportPaths>
                     ${project.build.directory}/checkstyle-result.xml
