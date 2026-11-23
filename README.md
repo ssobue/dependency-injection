@@ -96,7 +96,7 @@ mvn test
 ## CI Status
 
 - SonarCloud [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ssobue_dependency-injection&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ssobue_dependency-injection)
-- GitHub Actions verifies Maven on JDK 25 and JDK 26.
+- GitHub Actions verifies Maven on JDK 25 and JDK 27.
 - SonarCloud analysis runs on JDK 25 when the `SONAR_TOKEN` secret is configured.
 
 ## Update Properties
