@@ -57,5 +57,4 @@ mvn -DskipTests package
 
 ## Dependabot
 - Config: `.github/dependabot.yml`
-- Maven updates: weekly, labels PRs with `dependencies`
-- GitHub Actions updates: weekly (Monday 04:30 Asia/Tokyo), max 5 open PRs, labels `dependencies`
+- Maven and GitHub Actions version updates are grouped into one weekly PR on Monday at 04:30 Asia/Tokyo, with the `dependencies` label.
